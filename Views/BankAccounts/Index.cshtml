@@ -1,0 +1,38 @@
+﻿<div id="page_box">
+    <div data-bind="foreach: accounts">
+        <div class="panel panel-success">
+            <div class="row">
+                <div class="col-md-4">
+                    <span>شماره حساب: </span>
+                    <span data-bind="text: account"></span>
+                </div>
+                <div class="col-md-4">
+                    <span>بانک: </span>
+                    <span data-bind="text: bank"></span>
+                </div>
+                <div class="col-md-4">
+                    <span>مالک: </span>
+                    <span data-bind="text: ownerName"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewModel(defaults) {
+        var self = this;
+        self.accounts = ko.observableArray(defaults);
+    }
+    $.ajax({
+        url: '/BankAccounts/GetAccounts',
+        method: 'POST',
+        contentType: 'applicaiton/json',
+        success: function (e) {
+            var model = new viewModel(e);
+            ko.applyBindings(model, $("#page_box")[0]);
+        }
+    });
+
+
+</script>

@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - web</title>
+    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/pNotify/pnotify.custom.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <script src="~/lib/jquery/jquery-3.4.1.min.js"></script>
+    <script src="~/lib/knockout/knockout-3.4.2.js"></script>
+    <script src="~/lib/pNotify/pnotify.custom.min.js"></script>
+    <script src="~/js/notification.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        
+        <div id="sidebar-wrapper">
+            <img class="sidebar-logo" src="~/images/logo.svg" />
+            <ul class="sidebar-nav">
+                <li><a href="@Url.Action("Index","TransactionHistory")"><i class="fa fa-exchange-alt"></i> تاریخچه تراکنش ها</a></li>
+                <li><a href="@Url.Action("Index","PersonalPortal")"><i class="fa fa-cubes"></i> درگاه های شخصی</a></li>
+                <li><a href="@Url.Action("Index","DestinationPortals")"><i class="fa fa-database"></i> درگاه های مقصد</a></li>
+                <li><a href="@Url.Action("Index","BankAccounts")"><i class="fa fa-credit-card"></i> حساب های بانکی</a></li>
+                <li><a href="@Url.Action("Index","ChargeAccount")"><i class="fa fa-battery"></i> شارژ حساب</a></li>
+                <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-user"></i> پروفایل</a></li>
+                <li><a href="@Url.Action("Index","Setting")"><i class="fa fa-cog"></i> تنظیمات</a></li>
+            </ul>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div id="apprun-app">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/apprun/apprun-html.js"></script>
+    <script src="~/js/site.js"></script>
+
+
+</body>
+</html>

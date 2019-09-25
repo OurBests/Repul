@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "_LoginLayout";
+}
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #60a3bc !important;
+    }
+</style>
+<div id="login_form">
+    <div data-bind="visible: stepOneVisible">
+        <div id="login_form_box" class="justify-content-center form_container">
+            <div style="text-align: center;margin-bottom: 10px;">لطفا شماره موبایل خود را وارد نمایید</div>
+            <div class="input-group mb-3" style="width:250px;margin:auto;">
+                <input type="text" data-bind="value: Phone" class="form-control input_user" maxlength="10">
+                <div class="input-group-append">
+                    <span id="no_holder" class="input-group-text">+98</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container" data-bind="loading: loading">
+            <button data-bind="click: sendStepone" class="btn login_btn">ارسال</button>
+        </div>
+    </div>
+    <div data-bind="visible: stepTwoVisible">
+        <div id="login_form_box" class="justify-content-center form_container">
+            <div style="text-align: center;margin-bottom: 10px;">کد ارسال شده را وارد نمایید</div>
+            <div class="input-group mb-3" style="width:250px;margin:auto;">
+                <input type="text" data-bind="value: SecureCode" class="form-control input_user" maxlength="6"
+                       style="text-align:center;">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container" data-bind="loading: loading">
+            <button data-bind="click: sendSteptwo" class="btn login_btn">ارسال</button>
+        </div>
+    </div>
+    <div data-bind="visible: stepRegisterVisible">
+        <div id="login_form_box" class="justify-content-center form_container">
+            <div style="text-align: center;margin-bottom: 10px;">لطفا کد ملی و نام کاربری خود را وارد نمایید</div>
+            <div class="input-group mb-3" style="width:250px;margin:auto;">
+                <div class="input-group-append">
+                    <span id="no_holder" class="input-group-text"> <i class="fa fa-id-card"></i> </span>
+                </div>
+                <input type="text" data-bind="value: NatCode" class="form-control input_user"
+                       maxlength="10" style="text-align:right;" placeholder="کد ملی">
+            </div>
+            <div class="input-group mb-3" style="width:250px;margin:auto;">
+                <div class="input-group-append">
+                    <span id="no_holder" class="input-group-text"> <i class="fa fa-user"></i> </span>
+                </div>
+                <input type="text" data-bind="value: Username" class="form-control input_user"
+                       maxlength="10" style="text-align:right;" placeholder="نام کاربری">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container" data-bind="loading: loading">
+            <button data-bind="click: sendStepRegister" class="btn login_btn">ورود</button>
+        </div>
+    </div>
+</div>
+<script>
+    function formViewModel(defaultForm) {
+        var self = this;
+        self.Phone = ko.observable(defaultForm.Phone).extend({ required: { message: 'شماره تماس را وارد نمایید!' } });
+        self.SecureCode = ko.observable(defaultForm.SecureCode);
+        self.NatCode = ko.observable(defaultForm.NatCode);
+        self.Username = ko.observable(defaultForm.Username);
+        self.stepRegisterVisible = ko.observable(defaultForm.stepRegisterVisible);
+        self.stepTwoVisible = ko.observable(defaultForm.stepTwoVisible);
+        self.stepOneVisible = ko.observable(defaultForm.stepOneVisible);
+        self.loading = ko.observable(defaultForm.loading);
+
+        self.sendStepone = function (e) {
+            $.ajax({
+                url: '/Login/StepOne',
+                method: 'POST',
+                data: ko.toJSON(self),
+                contentType:'application/json',
+                beforeSend: function () { self.loading(true); },
+                success: function (data) {
+                    self.stepOneVisible(false);
+                    self.stepTwoVisible(true);
+                },
+                complete: function () { self.loading(false); }
+            });
+        };
+        self.sendSteptwo = function (e) {
+            $.ajax({
+                url: '/Login/StepTwo',
+                method: 'POST',
+                data: ko.toJSON(self),
+                contentType:'application/json',
+                beforeSend: function () { self.loading(true); },
+                success: function (data) {
+                    if (data && data.hash) {
+                        location.href = "/";
+                        return;
+                    }
+                    self.stepTwoVisible(false);
+                    self.stepRegisterVisible(true);
+                },
+                complete: function () { self.loading(false); }
+            });
+        };
+        self.sendStepRegister = function (e) {
+            $.ajax({
+                url: '/Login/Register',
+                method: 'POST',
+                data: ko.toJSON(self),
+                contentType: 'application/json',
+                beforeSend: function () { self.loading(true); },
+                success: function (data) {
+                    location.href = "/";
+                },
+                complete: function () { self.loading(false); }
+            });
+        };
+    }
+    var model = new formViewModel({
+        Phone: '',
+        SecureCode: '',
+        NatCode: '',
+        Username: '',
+        stepRegisterVisible: false,
+        stepTwoVisible: false,
+        stepOneVisible: true,
+        loading: false,
+
+    });
+    ko.applyBindings(model, $("#login_form")[0]);
+
+
+
+    $("#phone").focus();
+    $("#phone").keyup(function () {
+        if ($("#phone").val().length == 10) {
+            $("#submit_btn").css("opacity", 1);
+        } else {
+            $("#submit_btn").css("opacity", 0);
+        }
+    });
+    $("#login_form").submit(function () {
+        if (!$("#phone").val()) {
+            notify('', 'شماره موبایل وارد نشده است!', 'error');
+            return false;
+        }
+        if ($("#phone").val().length < 10) {
+            notify('', 'شماره موبایل وارد شده صحیح نمیباشد!', 'error');
+            return false;
+        }
+
+    });
+</script>
