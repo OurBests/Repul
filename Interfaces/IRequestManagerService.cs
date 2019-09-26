@@ -8,6 +8,6 @@ namespace web.Interfaces
     public interface IRequestManagerService
     {
         Task<object> Post(string route, object postObject);
-        Task<T> Post<T>(string route, object postObject) where T : new();
+        Task<T> Post<T>(string route, object postObject);
     }
 }

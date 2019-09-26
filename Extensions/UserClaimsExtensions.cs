@@ -16,5 +16,9 @@ namespace web.Extensions
         {
             return claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         }
+        public static string GetUserHash(this IEnumerable<Claim> claims)
+        {
+            return claims.FirstOrDefault(x => x.Type == ClaimTypes.Hash)?.Value;
+        }
     }
 }

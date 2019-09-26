@@ -1,6 +1,6 @@
 ﻿<div id="page_box">
     <div data-bind="foreach: accounts">
-        <div class="panel panel-success">
+        <div class="r_row">
             <div class="row">
                 <div class="col-md-4">
                     <span>شماره حساب: </span>
@@ -17,22 +17,42 @@
             </div>
         </div>
     </div>
+    <div class="add_row_btn" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="modal fade" tabindex="-1" role="dialog"  data-bind="modal: addFormShow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     function viewModel(defaults) {
         var self = this;
+        self.addFormShow = ko.observable(false);
         self.accounts = ko.observableArray(defaults);
-    }
-    $.ajax({
-        url: '/BankAccounts/GetAccounts',
-        method: 'POST',
-        contentType: 'applicaiton/json',
-        success: function (e) {
-            var model = new viewModel(e);
-            ko.applyBindings(model, $("#page_box")[0]);
+        self.reload = function () {
+            $.ajax({
+                url: '/BankAccounts/GetAccounts',
+                method: 'POST',
+                contentType: 'applicaiton/json',
+                success: function (e) {
+                    self.accounts(e);
+                }
+            });
         }
-    });
+        self.addItem = function () {
+            debugger;
+            self.addFormShow(true);
+        }
+        self.reload();
+    }
+    var model = new viewModel([]);
+    ko.applyBindings(model, $("#page_box")[0]);
+
 
 
 </script>

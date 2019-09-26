@@ -8,6 +8,6 @@ namespace web.Interfaces
 {
     public interface IBankAccountService
     {
-        Task<AccountModel> GetUserAccounts(string userId);
+        Task<IEnumerable<AccountModel>> GetUserAccounts(GetBankAccountModel userId);
     }
 }

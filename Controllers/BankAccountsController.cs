@@ -25,7 +25,12 @@ namespace web.Controllers
         public async Task<IActionResult> GetAccounts()
         {
             var userId = User.Claims.GetUserId();
-            var result = await _bankAccountService.GetUserAccounts(userId);
+            var hash = User.Claims.GetUserHash();
+            var result = await _bankAccountService.GetUserAccounts(new Models.GetBankAccountModel
+            {
+                ID = userId,
+                Hash = hash
+            });
             return Json(result);
         }
     }

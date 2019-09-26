@@ -14,10 +14,10 @@ namespace web.Services
         {
             _requestManagerService = requestManagerService;
         }
-        public async Task<AccountModel> GetUserAccounts(string userId)
+        public async Task<IEnumerable<AccountModel>> GetUserAccounts(GetBankAccountModel userId)
         {
-            var result = await _requestManagerService.Post<AccountModel>("/accounts_get", new { ID = userId });
-            return result;
+            var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<AccountModel>>>("/accounts_get", userId );
+            return result.DataModel;
         }
     }
 }

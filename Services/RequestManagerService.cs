@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using web.Common;
 using web.Interfaces;
@@ -30,7 +31,7 @@ namespace web.Services
             return JsonConvert.DeserializeObject(result.Content);
         }
 
-        public async Task<T> Post<T>(string route, object postObject) where T : new()
+        public async Task<T> Post<T>(string route, object postObject) 
         {
             var r = new RestRequest(route, Method.POST, DataFormat.Json);
             r.AddJsonBody(postObject);
