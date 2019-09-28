@@ -7,6 +7,5 @@ namespace web.Models
 {
     public class GetBankAccountModel : ServiceRequest
     {
-        public string ID { get; set; }
     }
 }

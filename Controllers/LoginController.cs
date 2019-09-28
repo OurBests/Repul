@@ -22,7 +22,7 @@ namespace web.Controllers
             _twoStepVerificationService = twoStepVerificationService;
         }
         [HttpGet]
-        public IActionResult StepOne()
+        public IActionResult Index()
         {
             return View();
         }
@@ -33,12 +33,6 @@ namespace web.Controllers
             if (!ModelState.IsValid) return BadRequest();
             var result = await _twoStepVerificationService.CreateSecureCode(model);
             return Json(model);
-        }
-
-        [HttpGet]
-        public IActionResult StepTwo(LoginStepOneModel model)
-        {
-            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> StepTwo([FromBody] LoginStepTwoModel model)
@@ -56,11 +50,6 @@ namespace web.Controllers
             {
                 return Json(model);
             }
-        }
-        public IActionResult Register(LoginStepTwoModel model)
-        {
-            
-            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegistrationModel model)
@@ -81,7 +70,10 @@ namespace web.Controllers
 
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
+            {
+                IsPersistent = true
+            });
         }
     }
 }

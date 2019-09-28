@@ -41,8 +41,9 @@ namespace web
             services.AddTransient<IBankAccountService, BankAccountService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config=> {
-                config.LoginPath = "/Login/StepOne";
+                config.LoginPath = "/Login";
                 config.SlidingExpiration = true;
+                config.ExpireTimeSpan = TimeSpan.FromDays(10);
             });
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

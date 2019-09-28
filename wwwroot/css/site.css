@@ -7,6 +7,10 @@ a.navbar-brand {
     word-break: break-all;
 }
 
+a, a:visited, a:hover {
+    color: #000;
+    text-decoration: none;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -284,7 +288,7 @@ body {
     font-size: 22px;
 }
 
-.r_modal{
+.r_modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -306,5 +310,43 @@ body {
 }
 
 .r_modal[visible="true"] {
-    display:block;
+    display: block;
 }
+
+
+.r ul.nav.nav-tabs {
+    text-align: center;
+    width: auto;
+    margin: auto;
+    display: block;
+    border-bottom: 1px solid #8ddbff;
+    overflow: hidden;
+    height: 35px;
+}
+
+    .r ul.nav.nav-tabs li {
+        display: inline-block;
+        background-color: #B3E5FC;
+        border-radius: 3px 3px 0 0;
+        overflow:hidden;
+    }
+
+        .r ul.nav.nav-tabs li:hover {
+            background-color: #8ddbff;
+        }
+
+        .r ul.nav.nav-tabs li a {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            padding: 5px 10px;
+            
+        }
+
+
+
+
+            .r ul.nav.nav-tabs li a.active {
+                background-color: #00BCD4;
+                color: #fff;
+            }

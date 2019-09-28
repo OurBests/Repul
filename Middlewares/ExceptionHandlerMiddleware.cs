@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Text;
 using System.Threading.Tasks;
 using web.Common;
 
@@ -23,7 +24,8 @@ namespace web.Middlewares
             catch (ManualException ex)
             {
                 httpContext.Response.StatusCode = 800;
-                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(new { Message = ex.Message }));
+                httpContext.Response.ContentType = "application/json;charset=utf-8";
+                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(new { Message = ex.Message }),Encoding.UTF8);
             }
         }
     }

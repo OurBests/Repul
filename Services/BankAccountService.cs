@@ -14,6 +14,13 @@ namespace web.Services
         {
             _requestManagerService = requestManagerService;
         }
+
+        public async Task<AccountModel> AddAccount(AddAccountModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<AccountModel>>("/accounts_add", model);
+            return result.DataModel;
+        }
+
         public async Task<IEnumerable<AccountModel>> GetUserAccounts(GetBankAccountModel userId)
         {
             var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<AccountModel>>>("/accounts_get", userId );

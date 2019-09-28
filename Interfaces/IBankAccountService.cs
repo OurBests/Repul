@@ -9,5 +9,6 @@ namespace web.Interfaces
     public interface IBankAccountService
     {
         Task<IEnumerable<AccountModel>> GetUserAccounts(GetBankAccountModel userId);
+        Task<AccountModel> AddAccount(AddAccountModel model);
     }
 }

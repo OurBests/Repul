@@ -18,11 +18,86 @@
         </div>
     </div>
     <div class="add_row_btn" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
-    <div class="modal fade" tabindex="-1" role="dialog"  data-bind="modal: addFormShow">
+    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    
+                    <ul class="nav nav-tabs">
+                        <li id="first_tab" class="active"><a data-toggle="tab" href="#home">شماره کارت</a></li>
+                        <li><a data-toggle="tab" href="#menu1">شماره حساب</a></li>
+                        <li><a data-toggle="tab" href="#menu2">شماره شبا</a></li>
+                    </ul>
+
+                    <div class="tab-content" style="padding-top:10px;">
+                        <div id="home" class="tab-pane fade in active">
+                            <div>
+                                <label>شماره کارت</label>
+                                <input type="text" class="form-control" data-bind="value: CardNo" />
+                            </div>
+                            <div>
+                                <label>کد ملی</label>
+                                <input type="text" class="form-control" data-bind="value: NatCode" />
+                            </div>
+                            <div>
+                                <label>تاریخ تولد</label>
+                                <input type="text" class="form-control" data-bind="value: Birthdate" />
+                            </div>
+                        </div>
+                        <div id="menu1" class="tab-pane fade">
+                            <div>
+                                <label>شماره حساب</label>
+                                <input type="text" class="form-control" data-bind="value: AccountId" />
+                            </div>
+                            <div>
+                                <label>بانک</label>
+                                <select class="form-control" data-bind="value: BankId">
+                                    <option value="0">اقتصاد نوین</option>
+                                    <option value="1">سامان</option>
+                                    <option value="2">سرمایه</option>
+                                    <option value="3">توسعه </option>
+                                    <option value="4">سینا</option>
+                                    <option value="5">تجارت</option>
+                                    <option value="6">صنعت و معدن</option>
+                                    <option value="7">کشاورزی‌</option>
+                                    <option value="8">توسعه صادرات</option>
+                                    <option value="9">کارآفرین</option>
+                                    <option value="10">آینده</option>
+                                    <option value="11">صادرات</option>
+                                    <option value="12">ملی </option>
+                                    <option value="13">رسالت</option>
+                                    <option value="14">انصار</option>
+                                    <option value="15">ایران زمین </option>
+                                    <option value="16">دی</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>کد ملی</label>
+                                <input type="text" class="form-control" data-bind="value: NatCode" />
+                            </div>
+                            <div>
+                                <label>تاریخ تولد</label>
+                                <input type="text" class="form-control" data-bind="value: Birthdate" />
+                            </div>
+                        </div>
+                        <div id="menu2" class="tab-pane fade">
+                            <div>
+                                <label>شماره شبا</label>
+                                <input type="text" class="form-control" data-bind="value: IBANCode" />
+                            </div>
+                            <div>
+                                <label>کد ملی</label>
+                                <input type="text" class="form-control" data-bind="value: NatCode" />
+                            </div>
+                            <div>
+                                <label>تاریخ تولد</label>
+                                <input type="text" class="form-control" data-bind="value: Birthdate" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-success" data-bind="click: saveNewAccount">ثبت</button>
                 </div>
             </div>
         </div>
@@ -30,22 +105,44 @@
 </div>
 
 <script>
+    $("#first_tab a").click();
     function viewModel(defaults) {
         var self = this;
         self.addFormShow = ko.observable(false);
         self.accounts = ko.observableArray(defaults);
+        self.NatCode = ko.observable('');
+        self.Birthdate = ko.observable('');
+        self.AccountId = ko.observable('');
+        self.CardNo = ko.observable('');
+        self.IBANCode = ko.observable('');
+        self.BankId = ko.observable('');
         self.reload = function () {
             $.ajax({
                 url: '/BankAccounts/GetAccounts',
                 method: 'POST',
-                contentType: 'applicaiton/json',
+                contentType: 'applicaiton/json;charset=utf8',
                 success: function (e) {
                     self.accounts(e);
                 }
             });
+        };
+        self.saveNewAccount = function () {
+            $.ajax({
+                url: '/BankAccounts/Add',
+                method: 'POST',
+                contentType: 'application/json;charset=utf8',
+                beforeSend: function () { },
+                data: ko.toJSON(self),
+                success: function (e) {
+                    self.accounts.push(e);
+                    self.addFormShow(false);
+                    notify('افزودن حساب', 'حساب بانکی با موفقیت افزوده شد.', 'success');
+                },
+                complete: function () { }
+            });
+            console.log(ko.toJSON(self));
         }
         self.addItem = function () {
-            debugger;
             self.addFormShow(true);
         }
         self.reload();

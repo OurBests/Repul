@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using web.Extensions;
 using web.Filters;
 using web.Interfaces;
+using web.Models;
 
 namespace web.Controllers
 {
@@ -31,6 +32,13 @@ namespace web.Controllers
                 ID = userId,
                 Hash = hash
             });
+            return Json(result);
+        }
+        public async Task<IActionResult> Add([FromBody] AddAccountModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _bankAccountService.AddAccount(model);
             return Json(result);
         }
     }
