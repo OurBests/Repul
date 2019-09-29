@@ -3,16 +3,20 @@
         <div class="r_row">
             <div class="row">
                 <div class="col-md-4">
-                    <span>شماره حساب: </span>
-                    <span data-bind="text: account"></span>
+                    <span>شناسه: </span>
+                    <span data-bind="text: accountId"></span>
                 </div>
                 <div class="col-md-4">
-                    <span>بانک: </span>
-                    <span data-bind="text: bank"></span>
+                    <span>شماره شبا: </span>
+                    <span data-bind="text: ibaN_code"></span>
                 </div>
                 <div class="col-md-4">
-                    <span>مالک: </span>
-                    <span data-bind="text: ownerName"></span>
+                    <span>کد ملی: </span>
+                    <span data-bind="text: nationalCode"></span>
+                </div>
+                <div class="col-md-4">
+                    <span>تاریخ: </span>
+                    <span data-bind="text: jCreatedAt"></span>
                 </div>
             </div>
         </div>
@@ -22,76 +26,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <ul class="nav nav-tabs">
-                        <li id="first_tab" class="active"><a data-toggle="tab" href="#home">شماره کارت</a></li>
-                        <li><a data-toggle="tab" href="#menu1">شماره حساب</a></li>
-                        <li><a data-toggle="tab" href="#menu2">شماره شبا</a></li>
-                    </ul>
-
                     <div class="tab-content" style="padding-top:10px;">
-                        <div id="home" class="tab-pane fade in active">
-                            <div>
-                                <label>شماره کارت</label>
-                                <input type="text" class="form-control" data-bind="value: CardNo" />
-                            </div>
-                            <div>
-                                <label>کد ملی</label>
-                                <input type="text" class="form-control" data-bind="value: NatCode" />
-                            </div>
-                            <div>
-                                <label>تاریخ تولد</label>
-                                <input type="text" class="form-control" data-bind="value: Birthdate" />
-                            </div>
+                        <div>
+                            <label>شماره شبا</label>
+                            <input type="text" class="form-control" data-bind="value: IBANCode" />
                         </div>
-                        <div id="menu1" class="tab-pane fade">
-                            <div>
-                                <label>شماره حساب</label>
-                                <input type="text" class="form-control" data-bind="value: AccountId" />
-                            </div>
-                            <div>
-                                <label>بانک</label>
-                                <select class="form-control" data-bind="value: BankId">
-                                    <option value="0">اقتصاد نوین</option>
-                                    <option value="1">سامان</option>
-                                    <option value="2">سرمایه</option>
-                                    <option value="3">توسعه </option>
-                                    <option value="4">سینا</option>
-                                    <option value="5">تجارت</option>
-                                    <option value="6">صنعت و معدن</option>
-                                    <option value="7">کشاورزی‌</option>
-                                    <option value="8">توسعه صادرات</option>
-                                    <option value="9">کارآفرین</option>
-                                    <option value="10">آینده</option>
-                                    <option value="11">صادرات</option>
-                                    <option value="12">ملی </option>
-                                    <option value="13">رسالت</option>
-                                    <option value="14">انصار</option>
-                                    <option value="15">ایران زمین </option>
-                                    <option value="16">دی</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>کد ملی</label>
-                                <input type="text" class="form-control" data-bind="value: NatCode" />
-                            </div>
-                            <div>
-                                <label>تاریخ تولد</label>
-                                <input type="text" class="form-control" data-bind="value: Birthdate" />
-                            </div>
+                        <div style="margin-top:10px;">
+                            <label>کد ملی</label>
+                            <input type="text" class="form-control" data-bind="value: NatCode" />
                         </div>
-                        <div id="menu2" class="tab-pane fade">
-                            <div>
-                                <label>شماره شبا</label>
-                                <input type="text" class="form-control" data-bind="value: IBANCode" />
-                            </div>
-                            <div>
-                                <label>کد ملی</label>
-                                <input type="text" class="form-control" data-bind="value: NatCode" />
-                            </div>
-                            <div>
-                                <label>تاریخ تولد</label>
-                                <input type="text" class="form-control" data-bind="value: Birthdate" />
-                            </div>
+                        <div style="margin-top:10px;">
+                            <label>تاریخ تولد</label>
+                            <input type="text" class="form-control" data-bind="value: Birthdate" />
                         </div>
                     </div>
 
@@ -105,7 +51,8 @@
 </div>
 
 <script>
-    $("#first_tab a").click();
+    //$("#first_tab a").click();
+
     function viewModel(defaults) {
         var self = this;
         self.addFormShow = ko.observable(false);
@@ -153,3 +100,5 @@
 
 
 </script>
+
+

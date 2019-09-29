@@ -36,9 +36,4 @@
     <None Include="wwwroot\lib\jquery\jquery-3.4.1.slim.min.js" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="wwwroot\fonts\" />
-  </ItemGroup>
-
 </Project>

@@ -1,1 +1,114 @@
-﻿
+﻿<div id="page_box">
+    <div data-bind="foreach: portals">
+        <div class="r_row">
+            <div class="row">
+                <div class="col-md-3">
+                    <span>شناسه حساب: </span>
+                    <span data-bind="text: firstAccount.accountId"></span>
+                </div>
+                <div class="col-md-3">
+                    <span>کد ملی: </span>
+                    <span data-bind="text: firstAccount.nationalCode"></span>
+                </div>
+                <div class="col-md-3">
+                    <span>تاریخ: </span>
+                    <span data-bind="text: jCreatedAt"></span>
+                </div>
+                <div class="col-md-3">
+                    <span>مبلغ: </span>
+                    <span data-bind="text: price"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add_row_btn" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tab-content" style="padding-top:10px;">
+                        <div>
+                            <label>حساب</label>
+                            <select class="form-control" data-bind="foreach: accounts">
+                                <option data-bind="value: _id,text:ibaN_code+' '+nationalCode">
+                                </option>
+                            </select>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="t1">
+                                <label class="custom-control-label" for="t1">مبلغ توسط پرداخت کننده مشخص شود</label>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" class="form-control" data-bind="value: Price" />
+                            </div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="t2">
+                                <label class="custom-control-label" for="t2">توضیحات توسط پرداخت کننده مشخص شود</label>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" class="form-control" data-bind="value: Description" />
+                            </div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="t3">
+                                <label class="custom-control-label" for="t3">راهنمای پرداخت داشته باشد</label>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" class="form-control" data-bind="value: Help" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-success" data-bind="click: saveNewPortal">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function viewModel(defaults) {
+        self.portals = ko.observableArray(defaults);
+        self.accounts = ko.observableArray([]);
+        self.addFormShow = ko.observable(false);
+        self.Price = ko.observable('');
+        self.Description = ko.observable('');
+        self.Help = ko.observable('');
+        self.reload = function () {
+            $.ajax({
+                url: '/PersonalPortal/GetPersonalPortals',
+                method: 'POST',
+                contentType: 'applicaiton/json;charset=utf8',
+                success: function (e) {
+                    self.portals(e);
+                }
+            });
+            $.ajax({
+                url: '/BankAccounts/GetAccounts',
+                method: 'POST',
+                contentType: 'applicaiton/json;charset=utf8',
+                success: function (e) {
+                    self.accounts(e);
+                }
+            });
+        };
+        
+        self.addItem = function () {
+            self.addFormShow(true);
+        }
+        self.saveNewPortal = function () {
+            console.log(ko.toJSON(self));
+        }
+        self.reload();
+    };
+    var model = new viewModel([]);
+    ko.applyBindings(model, $("#page_box")[0]);
+</script>

@@ -39,6 +39,8 @@ namespace web
             services.AddSingleton<IRequestManagerService, RequestManagerService>();
             services.AddTransient<ITwoStepVerificationService, TwoStepVerificationService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
+            services.AddTransient<IPersonalPortalService, PersonalPortalService>();
+
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config=> {
                 config.LoginPath = "/Login";

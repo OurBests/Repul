@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using web.Common;
 
 namespace web.Models
 {
@@ -13,16 +14,7 @@ namespace web.Models
         public string AccountId { get; set; }
         public string IBANCode { get; set; }
         public string Birthdate { get; set; }
-        public string GBirthdate
-        {
-            get
-            {
-                var splited = Birthdate.Replace("-", "/").Split('/');
-                PersianCalendar pc = new PersianCalendar();
-                DateTime dt = new DateTime(int.Parse(splited[0]), int.Parse(splited[1]), int.Parse(splited[2]), pc);
-                return dt.ToString(CultureInfo.InvariantCulture);
-            }
-        }
+        public string GBirthdate => DateUtils.ToGregorianString(Birthdate);
         public string CardNo { get; set; }
     }
 }

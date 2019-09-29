@@ -13,6 +13,17 @@ a, a:visited, a:hover {
 }
 /* Sticky footer styles
 -------------------------------------------------- */
+/*@font-face {
+    font-family: 'is';
+    src: url('../fonts/iransans/eot/iransansweb_light.eot') format('embedded-opentype');
+}*/
+@font-face {
+    font-family: 'is';
+    src: url('../fonts/iransans/farsi-numerals/woff2/iransansweb(fanum)_light.woff2') format('woff2');
+}
+*{
+    font-family:is;
+}
 html {
     font-size: 14px;
 }
@@ -143,9 +154,9 @@ body {
     padding-left: 1px;
 }
 
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+/*.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
     background-color: #c0392b !important;
-}
+}*/
 
 .error_in_login .input_user {
     border-top: 1px solid red !important;
