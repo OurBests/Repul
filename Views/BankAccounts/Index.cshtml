@@ -1,14 +1,13 @@
-﻿<div id="page_box">
+﻿@{ 
+    ViewData["Title"] = "حساب های بانکی";
+}
+<div id="page_box">
     <div data-bind="foreach: accounts">
         <div class="r_row">
             <div class="row">
                 <div class="col-md-4">
                     <span>شناسه: </span>
                     <span data-bind="text: accountId"></span>
-                </div>
-                <div class="col-md-4">
-                    <span>شماره شبا: </span>
-                    <span data-bind="text: ibaN_code"></span>
                 </div>
                 <div class="col-md-4">
                     <span>کد ملی: </span>
@@ -19,9 +18,15 @@
                     <span data-bind="text: jCreatedAt"></span>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span>شماره شبا: </span>
+                    <span data-bind="text: ibaN_code"></span>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="add_row_btn" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
     <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -87,7 +92,6 @@
                 },
                 complete: function () { }
             });
-            console.log(ko.toJSON(self));
         }
         self.addItem = function () {
             self.addFormShow(true);

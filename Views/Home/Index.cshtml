@@ -1,8 +1,50 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div id="main_page_box">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<script>
+    window.addEventListener('popstate', function (addr) {
+         $.get(location.pathname, function (e) {
+                $("#main_page_box").html(e);
+            });
+        //$("#main_page_box").addClass('animated');
+        //$("#main_page_box").addClass('fadeOutLeft');
+        //setTimeout(200, function () {
+        //    $("#main_page_box").removeClass('animated');
+        //    $("#main_page_box").removeClass('fadeOutLeft');
+        //    $.get(location.pathname, function (e) {
+        //        $("#main_page_box").html(e);
+        //        $("#main_page_box").addClass('animated');
+        //        $("#main_page_box").addClass('fadeInRight');
+        //        setTimeOut(200, function () {
+        //            $("#main_page_box").removeClass('animated');
+        //            $("#main_page_box").removeClass('fadeInRight');
+        //        });
+        //    });
+        //})
+
+
+    });
+    const pushUrl = (href) => {
+        history.pushState({}, '', href);
+        window.dispatchEvent(new Event('popstate'));
+    };
+    $('#sidebar-wrapper > ul > li').click(function (e) {
+        e.preventDefault();
+        var addr = $(this).find('a').attr('href');
+        pushUrl(addr);
+        return;
+    });
+
+
+
+    $(function () {
+        if (location.pathname == '/' || location.pathname == '') return;
+        $.get(location.pathname, function (e) {
+            $("#main_page_box").html(e);
+        })
+
+    });
+</script>

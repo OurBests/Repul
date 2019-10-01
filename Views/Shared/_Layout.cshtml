@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - web</title>
+    <title>@ViewData["Title"] - ریپول</title>
     <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/pNotify/pnotify.custom.min.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/mdb.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/animate/animate.css" rel="stylesheet" />
 
     <script src="~/lib/jquery/jquery-3.4.1.min.js"></script>
     <script src="~/lib/knockout/knockout-3.4.2.js"></script>
@@ -36,10 +37,16 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div id="apprun-app">
-                    @RenderBody()
+            <div class="head-title-box">
+                <div class="addr-title">
+                    @ViewData["Title"]
                 </div>
+                <div class="head-tool-box">
+                </div>
+            </div>
+            <div class="container-fluid">
+
+                @RenderBody()
             </div>
         </div>
     </div>

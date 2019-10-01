@@ -10,5 +10,7 @@ namespace web.Interfaces
     {
         Task<IEnumerable<PersonalPortalModel>> GetUserPersonalPortals(GetPersonalPortalModel model);
         Task<PersonalPortalModel> AddPersonalPortal(AddPersonalPortalModel model);
+        Task<PersonalPortalModel> GetPersonalPortal(PayModel model);
+        Task<IEnumerable<PaymentModel>> GetPortalTransactions(PayModel payModel);
     }
 }

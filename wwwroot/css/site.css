@@ -21,9 +21,11 @@ a, a:visited, a:hover {
     font-family: 'is';
     src: url('../fonts/iransans/farsi-numerals/woff2/iransansweb(fanum)_light.woff2') format('woff2');
 }
-*{
-    font-family:is;
+
+* {
+    font-family: is;
 }
+
 html {
     font-size: 14px;
 }
@@ -189,10 +191,23 @@ body {
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
+    padding: 0;
     transition: all .5s;
     padding-right: 250px;
 }
+.head-title-box {
+    height: 80px;
+    background-color: #ececec;
+}
+.head-title-box .head-tool-box {
+    float:left;
+}
+    .head-title-box .addr-title {
+        padding-right: 28px;
+        padding-top: 22px;
+        font-size: 20px;
+        font-weight: bold;
+    }
 
 #menu-toggle {
     transition: all .3s;
@@ -286,17 +301,31 @@ body {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     padding: 5px;
     border-right: 5px solid #EF9A9A;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 10px;
 }
+
+    .r_row a {
+        color: #0092ff;
+    }
+
+        .r_row a:hover {
+            color: #00589a;
+        }
 
 .add_row_btn {
     text-align: center;
     margin-top: 10px;
     color: #fff;
-    background-color: #4CAF50;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    border-radius: 2px;
     cursor: pointer;
     font-size: 22px;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 10px;
+    display: block;
+    padding: 3px;
+    padding-top: 6px;   
 }
 
 .r_modal {
@@ -339,7 +368,7 @@ body {
         display: inline-block;
         background-color: #B3E5FC;
         border-radius: 3px 3px 0 0;
-        overflow:hidden;
+        overflow: hidden;
     }
 
         .r ul.nav.nav-tabs li:hover {
@@ -351,7 +380,6 @@ body {
             width: 100%;
             height: 100%;
             padding: 5px 10px;
-            
         }
 
 

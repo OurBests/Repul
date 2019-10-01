@@ -1,1 +1,150 @@
-﻿
+﻿@{
+    ViewData["Title"] = "درگاه های مقصد";
+    Layout = null;
+}
+<div id="page_box">
+    <div data-bind="foreach: portals">
+        <div class="r_row">
+            <div class="row">
+                <div class="col-md-3">
+                    <a data-bind="attr: {href: '/DestinationPortals/Pay/'+_id }" target="_blank">
+                        <span>لینک پرداخت <i class="fa fa-link"></i></span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href data-bind="click: $parent.showTran" target="_blank">
+                        <span>تاریخچه پرداخت ها <i class="fa fa-link"></i></span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <span>شناسه درگاه: </span>
+                    <span data-bind="text: dportalId"></span>
+                </div>
+                <div class="col-md-4">
+                    <span>عنوان : </span>
+                    <span data-bind="text: title"></span>
+                </div>
+                <div class="col-md-4">
+                    <span>تاریخ: </span>
+                    <span data-bind="text: jCreatedAt"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tab-content" style="padding-top:20px;">
+                        <div style="margin-top:20px;">
+                            <div>
+                                <label>شماره شبا</label>
+                                <input type="text" class="form-control" data-bind="value: iban_code" />
+                            </div>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <div>
+                                <label>عنوان</label>
+                                <input type="text" class="form-control" data-bind="value: title" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-bind="click: saveNewPortal">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: showTransModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tab-content" style="padding-top:20px;" data-bind="foreach: trans">
+                        <div class="r_row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span>تاریخ تراکنش: </span>
+                                    <span data-bind="text: jUpdatedAt"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span>کد رهگیری: </span>
+                                    <span data-bind="text: longAuthority"></span>
+                                </div>
+                            </div><div class="row">
+                                <div class="col-md-6">
+                                    <span>مبلغ: </span>
+                                    <span data-bind="text: price"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span>نتیجه: </span>
+                                    <span data-bind="text: resultStatus == 'OK' ? 'موفقیت آمیز' : 'نا موفق'"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>توضیحات: </span>
+                                    <span data-bind="text: description"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function viewModel(defaults) {
+        self = this;
+        self.portals = ko.observableArray(defaults);
+        self.trans = ko.observableArray([]);
+        self.addFormShow = ko.observable(false);
+        self.showTransModal = ko.observable(false);
+        self.iban_code = ko.observable('');
+        self.title = ko.observable('');
+        self.reload = function () {
+            $.ajax({
+                url: '/DestinationPortals/Get',
+                method: 'POST',
+                contentType: 'applicaiton/json;charset=utf8',
+                success: function (e) {
+                    self.portals(e);
+                }
+            });
+        };
+
+        self.addItem = function () {
+            self.addFormShow(true);
+        }
+        self.saveNewPortal = function () {
+            console.log(ko.toJSON(self));
+            $.ajax({
+                url: '/DestinationPortals/Add',
+                method: 'POST',
+                contentType: 'application/json;charset=utf8',
+                beforeSend: function () { },
+                data: ko.toJSON(self),
+                success: function (e) {
+                    self.portals.push(e);
+                    self.addFormShow(false);
+                    notify('درگاه', 'درگاه مقصد مورد نظر شما با موفقیت ایجاد شد.', 'success');
+                },
+                complete: function () { }
+            });
+        }
+        self.showTran = function (row) {
+            self.trans(row.payments);
+            self.showTransModal(true);
+        }
+        self.reload();
+    };
+    var model = new viewModel([]);
+    ko.applyBindings(model, $("#page_box")[0]);
+</script>

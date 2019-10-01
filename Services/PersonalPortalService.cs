@@ -20,6 +20,18 @@ namespace web.Services
             return result.DataModel;
         }
 
+        public async Task<PersonalPortalModel> GetPersonalPortal(PayModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<PersonalPortalModel>>>("/portal_get_one", model);
+            return result.DataModel.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<PaymentModel>> GetPortalTransactions(PayModel payModel)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<PaymentModel>>>("/portal_get_trans", payModel);
+            return result.DataModel;
+        }
+
         public async Task<IEnumerable<PersonalPortalModel>> GetUserPersonalPortals(GetPersonalPortalModel model)
         {
             var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<PersonalPortalModel>>>("/portal_get", model);

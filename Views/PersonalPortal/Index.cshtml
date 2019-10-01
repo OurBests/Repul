@@ -1,6 +1,22 @@
-﻿<div id="page_box">
+﻿@{
+    ViewData["Title"] = "درگاه های شخصی";
+    Layout = null;
+}
+<div id="page_box">
     <div data-bind="foreach: portals">
         <div class="r_row">
+            <div class="row">
+                <div class="col-md-3">
+                    <a data-bind="attr: {href: '/PersonalPortal/Pay/'+_id }" target="_blank">
+                        <span>لینک درگاه <i class="fa fa-link"></i></span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href data-bind="click: $parent.showTran" target="_blank">
+                        <span>تراکنش ها <i class="fa fa-link"></i></span>
+                    </a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <span>شناسه حساب: </span>
@@ -21,67 +37,119 @@
             </div>
         </div>
     </div>
-    <div class="add_row_btn" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
     <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="tab-content" style="padding-top:10px;">
+                    <div class="tab-content" style="padding-top:20px;">
                         <div>
                             <label>حساب</label>
-                            <select class="form-control" data-bind="foreach: accounts">
-                                <option data-bind="value: _id,text:ibaN_code+' '+nationalCode">
-                                </option>
-                            </select>
+                            <select class="form-control" data-bind="value: accountId,options: accounts,optionsText: 'ibaN_code',optionsValue: '_id'"></select>
                         </div>
-                        <div style="margin-top:10px;">
+                        <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="t1">
-                                <label class="custom-control-label" for="t1">مبلغ توسط پرداخت کننده مشخص شود</label>
+                                <input type="checkbox" class="custom-control-input" id="price_show">
+                                <label class="custom-control-label" for="price_show">مبلغ توسط پرداخت کننده مشخص شود</label>
                             </div>
-                            <div>
-                                <label></label>
-                                <input type="text" class="form-control" data-bind="value: Price" />
+                            <div id="price_box" style="display:none;">
+                                <input type="text" class="form-control" data-bind="value: price" placeholder="مبلغ" />
                             </div>
+                            <script>
+                                $("#price_show").change(function () {
+                                    $("#price_box").toggle('fast');
+                                });
+                            </script>
                         </div>
-                        <div style="margin-top:10px;">
+                        <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="t2">
-                                <label class="custom-control-label" for="t2">توضیحات توسط پرداخت کننده مشخص شود</label>
+                                <input type="checkbox" class="custom-control-input" id="description_show">
+                                <label class="custom-control-label" for="description_show">توضیحات توسط پرداخت کننده مشخص شود</label>
                             </div>
-                            <div>
-                                <label></label>
-                                <input type="text" class="form-control" data-bind="value: Description" />
+                            <div id="description_box" style="display:none;">
+                                <input type="text" class="form-control" data-bind="value: description" placeholder="توضیحات" />
                             </div>
+                            <script>
+                                $("#description_show").change(function () {
+                                    $("#description_box").toggle('fast');
+                                });
+                            </script>
                         </div>
-                        <div style="margin-top:10px;">
+                        <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="t3">
-                                <label class="custom-control-label" for="t3">راهنمای پرداخت داشته باشد</label>
+                                <input type="checkbox" class="custom-control-input" id="help_show">
+                                <label class="custom-control-label" for="help_show">راهنمای پرداخت داشته باشد</label>
                             </div>
-                            <div>
-                                <label></label>
-                                <input type="text" class="form-control" data-bind="value: Help" />
+                            <div id="help_box" style="display:none;">
+                                <input type="text" class="form-control" data-bind="value: help" placeholder="متن راهنما" />
                             </div>
+                            <script>
+                                $("#help_show").change(function () {
+                                    $("#help_box").toggle('fast');
+                                });
+                            </script>
                         </div>
                     </div>
 
                 </div>
-                <div class="modal-body">
+                <div class="modal-footer">
                     <button class="btn btn-success" data-bind="click: saveNewPortal">ثبت</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: showTransModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tab-content" style="padding-top:20px;" data-bind="foreach: trans">
+                        <div class="r_row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span>تاریخ تراکنش: </span>
+                                    <span data-bind="text: jUpdatedAt"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span>کد رهگیری: </span>
+                                    <span data-bind="text: longAuthority"></span>
+                                </div>
+                            </div><div class="row">
+                                <div class="col-md-6">
+                                    <span>مبلغ: </span>
+                                    <span data-bind="text: price"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span>نتیجه: </span>
+                                    <span data-bind="text: resultStatus == 'OK' ? 'موفقیت آمیز' : 'نا موفق'"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>توضیحات: </span>
+                                    <span data-bind="text: description"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script>
     function viewModel(defaults) {
+        self = this;
         self.portals = ko.observableArray(defaults);
+        self.trans = ko.observableArray([]);
         self.accounts = ko.observableArray([]);
         self.addFormShow = ko.observable(false);
-        self.Price = ko.observable('');
-        self.Description = ko.observable('');
-        self.Help = ko.observable('');
+        self.showTransModal = ko.observable(false);
+        self.price = ko.observable('');
+        self.description = ko.observable('');
+        self.help = ko.observable('');
+        self.accountId = ko.observable('');
         self.reload = function () {
             $.ajax({
                 url: '/PersonalPortal/GetPersonalPortals',
@@ -100,12 +168,29 @@
                 }
             });
         };
-        
+
         self.addItem = function () {
             self.addFormShow(true);
         }
         self.saveNewPortal = function () {
             console.log(ko.toJSON(self));
+            $.ajax({
+                url: '/PersonalPortal/Add',
+                method: 'POST',
+                contentType: 'application/json;charset=utf8',
+                beforeSend: function () { },
+                data: ko.toJSON(self),
+                success: function (e) {
+                    self.portals.push(e);
+                    self.addFormShow(false);
+                    notify('درگاه شخصی', 'درگاه شخصی شما با موفقیت ایجاد شد.', 'success');
+                },
+                complete: function () { }
+            });
+        }
+        self.showTran = function (row) {
+            self.trans(row.payments);
+            self.showTransModal(true);
         }
         self.reload();
     };

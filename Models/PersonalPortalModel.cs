@@ -20,5 +20,6 @@ namespace web.Models
         public string JCreatedAt => DateUtils.ToJalaliString(CreatedAt);
         public IEnumerable<AccountModel> Account { get; set; }
         public AccountModel FirstAccount => Account?.FirstOrDefault();
+        public IEnumerable<PaymentModel> Payments { get; set; }
     }
 }

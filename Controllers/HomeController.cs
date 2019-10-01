@@ -13,21 +13,9 @@ namespace web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        [VirtualDom]
         public IActionResult Index()
         {
             return View();
-        }
-        [VirtualDom]
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        [VirtualDom]
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

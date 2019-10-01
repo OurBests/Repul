@@ -40,6 +40,8 @@ namespace web
             services.AddTransient<ITwoStepVerificationService, TwoStepVerificationService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
             services.AddTransient<IPersonalPortalService, PersonalPortalService>();
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IDestinationPortalService, DestinationPortalService>();
 
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config=> {
@@ -54,19 +56,19 @@ namespace web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseMiddleware(typeof(ExceptionCustomHandlerMiddleware));
+            ///app.UseMiddleware(typeof(ExceptionCustomHandlerMiddleware));
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
