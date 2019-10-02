@@ -41,26 +41,20 @@ namespace web.Controllers
 
             var result = await _twoStepVerificationService.CheckSecureCode(model);
 
-            if (result != null )
-            {
+            if (result != null)
                 _login(result.Username, model.Phone, result.Hash, result.ID);
-                return Json(result);
-            }
-            else
-            {
-                return Json(model);
-            }
+            return Json(result);
         }
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegistrationModel model)
         {
             if (!ModelState.IsValid) return BadRequest();
             var result = await _twoStepVerificationService.Register(model);
-            _login(model.Username, model.Phone, result.Hash,result.ID);
+            _login(model.Username, model.Phone, result.Hash, result.ID);
             return Json(result);
         }
 
-        private void _login(string userName, string phone, string hash,string userId)
+        private void _login(string userName, string phone, string hash, string userId)
         {
             var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.Name, userName),

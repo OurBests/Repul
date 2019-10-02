@@ -83,6 +83,7 @@ namespace web.Controllers
         public async Task<IActionResult> PayReturn([FromQuery] PayReturnModel model)
         {
             var verfyResult = await _paymentService.VerifyRequest(model);
+            ViewBag.OK = model.Status;
             return View(verfyResult);
         }
     }

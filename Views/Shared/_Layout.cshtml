@@ -22,36 +22,44 @@
 <body>
     <div id="wrapper">
 
-        <div id="sidebar-wrapper">
-            <img class="sidebar-logo" src="~/images/logo.svg" />
-            <ul class="sidebar-nav">
-                <li><a href="@Url.Action("Index","TransactionHistory")"><i class="fa fa-exchange-alt"></i> تاریخچه تراکنش ها</a></li>
-                <li><a href="@Url.Action("Index","PersonalPortal")"><i class="fa fa-cubes"></i> درگاه های شخصی</a></li>
-                <li><a href="@Url.Action("Index","DestinationPortals")"><i class="fa fa-database"></i> درگاه های مقصد</a></li>
-                <li><a href="@Url.Action("Index","BankAccounts")"><i class="fa fa-credit-card"></i> حساب های بانکی</a></li>
-                <li><a href="@Url.Action("Index","ChargeAccount")"><i class="fa fa-battery"></i> شارژ حساب</a></li>
-                <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-user"></i> پروفایل</a></li>
-                <li><a href="@Url.Action("Index","Setting")"><i class="fa fa-cog"></i> تنظیمات</a></li>
-            </ul>
+        <div id="sidebar-wrapper" class="close-in-small">
+            <div id="menu_toggle_btn"><i class="fa fa-bars"></i></div>
+            <div id="logo_box" >
+                <img class="sidebar-logo" src="~/images/logo.svg" />
+            </div>
+            <div style="display: flex;">
+                <ul class="sidebar-nav">
+                    <li><a href="@Url.Action("Index","TransactionHistory")"><i class="fa fa-exchange-alt"></i> تاریخچه تراکنش ها</a></li>
+                    <li><a href="@Url.Action("Index","PersonalPortal")"><i class="fa fa-cubes"></i> درگاه های شخصی</a></li>
+                    <li><a href="@Url.Action("Index","DestinationPortals")"><i class="fa fa-database"></i> درگاه های مقصد</a></li>
+                    <li><a href="@Url.Action("Index","BankAccounts")"><i class="fa fa-credit-card"></i> حساب های بانکی</a></li>
+                    <li><a href="@Url.Action("Index","ChargeAccount")"><i class="fa fa-battery"></i> شارژ حساب</a></li>
+                    <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-user"></i> پروفایل</a></li>
+                    <li><a href="@Url.Action("Index","Setting")"><i class="fa fa-cog"></i> تنظیمات</a></li>
+                </ul>
+            </div>
+            
         </div>
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="head-title-box">
-                <div class="addr-title">
-                    @ViewData["Title"]
+            <div id="paging_box">
+                <div class="head-title-box">
+                    <div class="addr-title">
+                        @ViewData["Title"]
+                    </div>
+                    <div class="head-tool-box">
+                    </div>
                 </div>
-                <div class="head-tool-box">
-                </div>
-            </div>
-            <div class="container-fluid">
+                <div class="container-fluid">
 
-                @RenderBody()
+                    @RenderBody()
+                </div>
             </div>
         </div>
     </div>
     @*<script src="~/lib/apprun/apprun-html.js"></script>*@
-    @*<script src="~/js/site.js"></script>*@
+    <script src="~/js/site.js"></script>
 
 
 </body>

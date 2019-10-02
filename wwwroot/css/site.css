@@ -19,7 +19,7 @@ a, a:visited, a:hover {
 }*/
 @font-face {
     font-family: 'is';
-    src: url('../fonts/iransans/farsi-numerals/woff2/iransansweb(fanum)_light.woff2') format('woff2');
+    src: url('../fonts/IRANSans/farsi-numerals/woff2/IRANSansWeb(FaNum)_Light.woff2') format('woff2');
 }
 
 * {
@@ -87,7 +87,7 @@ body {
     width: 350px;
     margin-top: auto;
     margin-bottom: auto;
-    background: #f39c12;
+    background: #B2EBF2;
     position: relative;
     display: flex;
     justify-content: center;
@@ -114,7 +114,6 @@ body {
     height: 150px;
     width: 150px;
     border-radius: 50%;
-    background-color: #f39c12;
 }
 
 .form_container {
@@ -182,7 +181,6 @@ body {
     background: #B71C1C;
     opacity: 0.9;
     transition: all .5s;
-    display: flex;
     align-items: center;
     width: 250px;
 }
@@ -194,14 +192,22 @@ body {
     padding: 0;
     transition: all .5s;
     padding-right: 250px;
+    overflow: hidden;
 }
+
+#paging_box {
+    overflow: hidden;
+}
+
 .head-title-box {
     height: 80px;
     background-color: #ececec;
 }
-.head-title-box .head-tool-box {
-    float:left;
-}
+
+    .head-title-box .head-tool-box {
+        float: left;
+    }
+
     .head-title-box .addr-title {
         padding-right: 28px;
         padding-top: 22px;
@@ -256,12 +262,53 @@ body {
         }
 
 .sidebar-logo {
-    width: 100px;
+    width: 150px;
     top: 50px;
     display: block;
     position: absolute;
-    left: 80px;
+    left: 50px;
     color: #fff;
+}
+
+#logo_box {
+    min-height: 200px;
+}
+
+#menu_toggle_btn {
+    display: none;
+    height: 42px;
+    color: #fff;
+    font-size: 30px;
+    padding-right: 13px;
+    padding-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar-logo {
+        width: 50px;
+        top: 10px;
+        left: 100px;
+    }
+
+    #logo_box {
+        min-height: 70px;
+    }
+
+    #page-content-wrapper {
+        padding-right: 50px !important;
+    }
+
+    .close-in-small {
+        width: 50px !important;
+    }
+
+        .close-in-small * {
+            display: none;
+        }
+
+    #menu_toggle_btn, #menu_toggle_btn  *{
+        display: block!important;
+    }
 }
 
 [visible="true"] {
@@ -325,7 +372,7 @@ body {
     margin-top: 10px;
     display: block;
     padding: 3px;
-    padding-top: 6px;   
+    padding-top: 6px;
 }
 
 .r_modal {
@@ -389,3 +436,7 @@ body {
                 background-color: #00BCD4;
                 color: #fff;
             }
+
+#r_title {
+    display: none;
+}

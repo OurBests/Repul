@@ -30,7 +30,10 @@ namespace web.Services
         {
             var result = await _requestManagerService.Post<ServiceResponse<CheckSecureCodeResultModel>>("/check_secure_code", model);
             if (result?.Code != 1 && result?.Code != 200)
-                throw new ManualException("خطا در ارسال کد اعتبار سنجی!");
+                return new CheckSecureCodeResultModel
+                {
+                    IsInvalid = true
+                };
             return result.DataModel;
         }
         public async Task<RegistrationResultModel> Register(RegistrationModel model)

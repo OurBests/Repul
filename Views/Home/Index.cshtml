@@ -1,49 +1,50 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
 }
 <div id="main_page_box">
 
 </div>
 <script>
+    
     window.addEventListener('popstate', function (addr) {
-         $.get(location.pathname, function (e) {
+        $.get(location.pathname, function (e) {
+            animateCSS('.addr-title', 'fadeOutLeftBig');
+            animateCSS('.head-tool-box', 'fadeOutLeftBig');
+            animateCSS("#main_page_box", 'fadeOutLeftBig', function () {
                 $("#main_page_box").html(e);
+                var title = $('#r_title').text();
+                document.title = title || 'ریپول';
+                $(".addr-title").text(document.title);
+                animateCSS("#main_page_box", 'fadeInRightBig');
+                animateCSS('.addr-title', 'fadeInRightBig');
+                animateCSS('.head-tool-box', 'fadeInRightBig');
             });
-        //$("#main_page_box").addClass('animated');
-        //$("#main_page_box").addClass('fadeOutLeft');
-        //setTimeout(200, function () {
-        //    $("#main_page_box").removeClass('animated');
-        //    $("#main_page_box").removeClass('fadeOutLeft');
-        //    $.get(location.pathname, function (e) {
-        //        $("#main_page_box").html(e);
-        //        $("#main_page_box").addClass('animated');
-        //        $("#main_page_box").addClass('fadeInRight');
-        //        setTimeOut(200, function () {
-        //            $("#main_page_box").removeClass('animated');
-        //            $("#main_page_box").removeClass('fadeInRight');
-        //        });
-        //    });
-        //})
-
-
+        });
     });
-    const pushUrl = (href) => {
-        history.pushState({}, '', href);
+    const pushUrl = (href, title) => {
+        history.pushState({}, title, href);
         window.dispatchEvent(new Event('popstate'));
     };
     $('#sidebar-wrapper > ul > li').click(function (e) {
         e.preventDefault();
+        $('#sidebar-wrapper > ul > li').removeClass('active');
+        $(this).addClass('active');
         var addr = $(this).find('a').attr('href');
-        pushUrl(addr);
+        var title = $(this).find('a').text();
+        document.title = title; 
+        if ($("#menu_toggle_btn").attr('data-toggle') === '0') {
+            $("#menu_toggle_btn").click();
+        }
+        pushUrl(addr, title);
         return;
     });
-
-
-
     $(function () {
         if (location.pathname == '/' || location.pathname == '') return;
         $.get(location.pathname, function (e) {
             $("#main_page_box").html(e);
+            var title = $('#r_title').text();
+            document.title = title|| 'ریپول';
         })
 
     });

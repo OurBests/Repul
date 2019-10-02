@@ -17,5 +17,6 @@ namespace web.Models
         public bool  Active { get; set; }
         public string Status { get; set; }
         public string Hash { get; set; }
+        public bool IsInvalid { get; internal set; }
     }
 }

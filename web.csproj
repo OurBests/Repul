@@ -17,7 +17,7 @@
   </ItemGroup>
 
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <None Include="wwwroot\lib\bootstrap\bootstrap.min.css" />
     <None Include="wwwroot\lib\fontawesome\css\all.min.css" />
     <None Include="wwwroot\lib\fontawesome\webfonts\fa-brands-400.eot" />
@@ -36,6 +36,6 @@
     <None Include="wwwroot\lib\fontawesome\webfonts\fa-solid-900.woff" />
     <None Include="wwwroot\lib\fontawesome\webfonts\fa-solid-900.woff2" />
     <None Include="wwwroot\lib\jquery\jquery-3.4.1.slim.min.js" />
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
