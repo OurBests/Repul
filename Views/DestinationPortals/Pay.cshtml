@@ -1,77 +1,51 @@
 ﻿@model DestinationPortalModel
 @using Newtonsoft.Json;
 @{
-    Layout = null;
+    Layout = "_LoginLayout";
 }
-<!DOCTYPE html>
-<html>
 
-<head>
-    <title>Repul</title>
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #7E57C2 !important;
+    }
 
-    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
-    <link href="~/lib/pNotify/pnotify.custom.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
+    .user_card {
+        background: #B39DDB;
+    }
 
-    <script src="~/lib/jquery/jquery-3.4.1.min.js"></script>
-    <script src="~/lib/knockout/knockout-3.4.2.js"></script>
-    <script src="~/lib/knockout/knockout.validation.min.js"></script>
-    <script src="~/lib/pNotify/pnotify.custom.min.js"></script>
-    <script src="~/js/notification.js"></script>
+    .brand_logo_container {
+        background: #7E57C2;
+    }
+</style>
+<div id="login_form">
+    <form id="pay_form" action="/DestinationPortals/Pay/@Model.Id" method="post">
+        <div id="login_form_box" class="justify-content-center form_container">
 
-</head>
-<body>
-    <div class="container h-100">
-        <div class="d-flex justify-content-center h-100">
-            <div class="user_card">
-                <div class="d-flex justify-content-center">
-                    <div class="brand_logo_container">
-                        <img src="~/images/logo.svg" class="brand_logo" alt="Logo">
-                    </div>
+
+            <div class="" style="width:250px;margin:auto;">
+                <div style="width:100%;">مبلغ</div>
+                <input type="text" id="Price" name="Price" class="form-control "
+                       maxlength="10" style="text-align:right;margin-top:5px;" placeholder="ریال">
+            </div>
+            <div style="height:20px;"></div>
+            <div style="width:250px;margin:auto;">
+                <div>عنوان</div>
+                <div>
+                    <h5>
+                        @Model.Title
+                    </h5>
                 </div>
-                <style>
-                    body,
-                    html {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        background: #7E57C2  !important;
-                    }
-
-                    .user_card {
-                        background: #B39DDB;
-                    }
-
-                    .brand_logo_container {
-                        background: #7E57C2;
-                    }
-                </style>
-                <div id="login_form">
-                    <form id="pay_form" action="/DestinationPortals/Pay/@Model.Id" method="post">
-                        <div id="login_form_box" class="justify-content-center form_container">
-
-
-                            <div class="" style="width:250px;margin:auto;">
-                                <div style="width:100%;">مبلغ</div>
-                                <input type="text" id="Price" name="Price" class="form-control "
-                                       maxlength="10" style="text-align:right;margin-top:5px;" placeholder="ریال">
-                            </div>
-                            <div style="height:20px;"></div>
-                            <div style="width:250px;margin:auto;">
-                                <div>عنوان</div>
-                                <div>
-                                    <h5>
-                                        @Model.Title
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center mt-3 login_container">
-                            <button type="submit" class="btn btn-success">پرداخت</button>
-                        </div>
-                    </form>
-                    <script>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" class="btn btn-success">پرداخت</button>
+        </div>
+    </form>
+    <script>
                         $("#pay_form").submit(function () {
                             var data = @(Html.Raw(JsonConvert.SerializeObject(Model)));
                             if (!data.Price && !$("#Price").val()) {
@@ -79,11 +53,5 @@
                                 return false;
                             }
                         });
-                    </script>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+    </script>
+</div>

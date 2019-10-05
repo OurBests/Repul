@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web.Extensions;
 using web.Filters;
@@ -11,6 +12,7 @@ using web.Models;
 
 namespace web.Controllers
 {
+    [Authorize]
     public class BankAccountsController : Controller
     {
         private readonly IBankAccountService _bankAccountService;

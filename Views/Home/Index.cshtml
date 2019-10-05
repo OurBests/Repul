@@ -7,18 +7,20 @@
 </div>
 <script>
     
-    window.addEventListener('popstate', function (addr) {
+    window.addEventListener('popstate', function () {
         $.get(location.pathname, function (e) {
             animateCSS('.addr-title', 'fadeOutLeftBig');
             animateCSS('.head-tool-box', 'fadeOutLeftBig');
             animateCSS("#main_page_box", 'fadeOutLeftBig', function () {
+                   
                 $("#main_page_box").html(e);
-                var title = $('#r_title').text();
-                document.title = title || 'ریپول';
-                $(".addr-title").text(document.title);
+                var title = $(e).filter("#r_title").text();
+                document.title = title ;
+                $(".addr-title").text(title);
                 animateCSS("#main_page_box", 'fadeInRightBig');
                 animateCSS('.addr-title', 'fadeInRightBig');
                 animateCSS('.head-tool-box', 'fadeInRightBig');
+                $('.page-grid').height(window.innerHeight - 150);
             });
         });
     });
@@ -26,15 +28,15 @@
         history.pushState({}, title, href);
         window.dispatchEvent(new Event('popstate'));
     };
-    $('#sidebar-wrapper > ul > li').click(function (e) {
+    $('#sidebar-wrapper > div > ul > li > a').click(function (e) {
         e.preventDefault();
         $('#sidebar-wrapper > ul > li').removeClass('active');
         $(this).addClass('active');
-        var addr = $(this).find('a').attr('href');
-        var title = $(this).find('a').text();
+        var addr = $(this).attr('href');
+        var title = $('#sidebar-wrapper > div > ul > li > a[href="' + location.pathname + '"]').text();
         document.title = title; 
         if ($("#menu_toggle_btn").attr('data-toggle') === '0') {
-            $("#menu_toggle_btn").click();
+            $("#menu_toggle_btn").click();  
         }
         pushUrl(addr, title);
         return;
@@ -43,8 +45,10 @@
         if (location.pathname == '/' || location.pathname == '') return;
         $.get(location.pathname, function (e) {
             $("#main_page_box").html(e);
-            var title = $('#r_title').text();
-            document.title = title|| 'ریپول';
+            var title = $('#sidebar-wrapper > div > ul > li > a[href="' + location.pathname + '"]').text();
+            $(".addr-title").text(title);
+            document.title = title;
+            $('.page-grid').height(window.innerHeight - 150);
         })
 
     });

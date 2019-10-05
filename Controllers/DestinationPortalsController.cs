@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web.Extensions;
 using web.Filters;
@@ -10,6 +11,7 @@ using web.Models;
 
 namespace web.Controllers
 {
+    [Authorize]
     public class DestinationPortalsController : Controller
     {
         private readonly IDestinationPortalService _destinationPortalService;
@@ -29,6 +31,17 @@ namespace web.Controllers
             var userId = User.Claims.GetUserId();
             var hash = User.Claims.GetUserHash();
             var result = await _destinationPortalService.GetUserRegistredPortals(new GetDestinationPortalModel
+            {
+                ID = userId,
+                Hash = hash
+            });
+            return Json(result);
+        }
+        public async Task<IActionResult> GetGroups()
+        {
+            var userId = User.Claims.GetUserId();
+            var hash = User.Claims.GetUserHash();
+            var result = await _destinationPortalService.GetUserRegistredGroups(new ServiceRequest
             {
                 ID = userId,
                 Hash = hash

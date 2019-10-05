@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -45,10 +47,16 @@ namespace web
             services.AddTransient<IPaymentService, PaymentService>();
             services.AddTransient<IDestinationPortalService, DestinationPortalService>();
 
+            services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo("keys"))
+            .SetApplicationName("web")
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
+
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config=> {
                 config.LoginPath = "/Login";
                 config.SlidingExpiration = true;
-                config.ExpireTimeSpan = TimeSpan.FromDays(10);
+                config.ExpireTimeSpan = TimeSpan.FromDays(90);
             });
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -65,6 +73,7 @@ namespace web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
 
             app.UseStaticFiles();
             app.UseCookiePolicy();

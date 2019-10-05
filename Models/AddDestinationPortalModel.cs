@@ -11,5 +11,6 @@ namespace web.Models
         [JsonProperty("iban_code")]
         public string IBanCode { get; set; }
         public string Title { get; set; }
+        public string Group { get; set; }
     }
 }

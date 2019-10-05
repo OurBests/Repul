@@ -5,6 +5,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using web.Filters;
@@ -13,17 +15,23 @@ using web.Models;
 
 namespace web.Controllers
 {
-    [ManualExceptionHandler]
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly ITwoStepVerificationService _twoStepVerificationService;
-        public LoginController(ITwoStepVerificationService twoStepVerificationService)
+        private readonly IHostingEnvironment _env;
+        public LoginController(ITwoStepVerificationService twoStepVerificationService,
+            IHostingEnvironment env)
         {
             _twoStepVerificationService = twoStepVerificationService;
+            _env = env;
         }
         [HttpGet]
         public IActionResult Index()
         {
+            if (!_env.IsDevelopment())
+                if (User.Identity.IsAuthenticated)
+                    return RedirectToAction("Index", "home");
             return View();
         }
 

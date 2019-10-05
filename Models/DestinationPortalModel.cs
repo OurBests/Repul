@@ -18,5 +18,7 @@ namespace web.Models
         public string CreatedAt { get; set; }
         public string JCreatedAt => DateUtils.ToJalaliString(CreatedAt);
         public IEnumerable<PaymentModel> Payments { get; set; }
+        public IEnumerable<GroupModel> Groups { get; set; }
+        public string Group => Groups?.FirstOrDefault()?.Name;
     }
 }

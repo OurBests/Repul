@@ -11,6 +11,7 @@ using web.Models;
 
 namespace web.Controllers
 {
+    [Authorize]
     public class PersonalPortalController : Controller
     {
         private readonly IPersonalPortalService _personalPortalService;

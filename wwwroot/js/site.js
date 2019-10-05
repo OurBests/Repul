@@ -1,4 +1,5 @@
-﻿$("#menu_toggle_btn").click(function () {
+﻿
+$("#menu_toggle_btn").click(function () {
     if (!$(this).attr('data-toggle') || $(this).attr('data-toggle') === '0') {
         $("#sidebar-wrapper").attr('style', 'width:250px!important');
         $("#sidebar-wrapper *").show();
@@ -36,6 +37,13 @@ function isValidIranianNationalCode(input) {
 
     return (sum < 2 && check == sum) || (sum >= 2 && check + sum == 11);
 }
+
+const targetElement = document.querySelector("body");
+bodyScrollLock.disableBodyScroll(targetElement);
+bodyScrollLock.enableBodyScroll(targetElement);
+bodyScrollLock.clearAllBodyScrollLocks();
+
+
 // Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 

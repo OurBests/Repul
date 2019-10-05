@@ -2,10 +2,19 @@
     ViewData["Title"] = "درگاه های مقصد";
     Layout = null;
 }
-    <div id="r_title">درگاه های مقصد</div>
+<div id="r_title">درگاه های مقصد</div>
 <div id="page_box">
-    <div data-bind="foreach: portals">
+    <div class="page-grid" data-bind="foreach: portals">
+        <!-- ko if: $index() === 0 || $parent.portals()[$index() - 1].group !== group -->
+        <div class="group-title-box">
+            <div class="group-line-border"></div>
+            <div class="group-line" data-bind="text: group" style="text-align:center;"></div>
+        </div>
+        <!-- /ko -->
         <div class="r_row">
+
+            <div class="animation-flash flash-box" data-bind="visible: isNew"></div>
+
             <div class="row">
                 <div class="col-md-3">
                     <a data-bind="attr: {href: '/DestinationPortals/Pay/'+_id }" target="_blank">
@@ -40,6 +49,15 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="tab-content" style="padding-top:20px;">
+                        <div style="margin-top:20px;">
+                            <div>
+                                <label>گروه</label>
+                                <input list="group" class="form-control" style="font-size:16px;" data-bind="value: group">
+                                <datalist id="group" data-bind="foreach: groups">
+                                    <option data-bind="value: name,text: name">asdas</option>
+                                </datalist>
+                            </div>
+                        </div>
                         <div style="margin-top:20px;">
                             <div>
                                 <label>شماره شبا</label>
@@ -106,8 +124,10 @@
         self = this;
         self.portals = ko.observableArray(defaults);
         self.trans = ko.observableArray([]);
+        self.groups = ko.observableArray([]);
         self.addFormShow = ko.observable(false);
         self.showTransModal = ko.observable(false);
+        self.group = ko.observable('');
         self.iban_code = ko.observable('');
         self.title = ko.observable('');
         self.reload = function () {
@@ -116,7 +136,18 @@
                 method: 'POST',
                 contentType: 'applicaiton/json;charset=utf8',
                 success: function (e) {
+                    for (var i = 0; i < e.length; i++) {
+                        e[i].isNew = false;
+                    }
                     self.portals(e);
+                }
+            });
+            $.ajax({
+                url: '/DestinationPortals/GetGroups',
+                method: 'POST',
+                contentType: 'applicaiton/json;charset=utf8',
+                success: function (e) {
+                    self.groups(e);
                 }
             });
         };
@@ -125,7 +156,10 @@
             self.addFormShow(true);
         }
         self.saveNewPortal = function () {
-            console.log(ko.toJSON(self));
+            debugger;
+            var existsInGroups = self.groups().filter(function (item, i) { return item.name == self.group(); });
+            if (existsInGroups.length == 0)
+                self.groups.push({ name: self.group() });
             $.ajax({
                 url: '/DestinationPortals/Add',
                 method: 'POST',
@@ -133,9 +167,23 @@
                 beforeSend: function () { },
                 data: ko.toJSON(self),
                 success: function (e) {
-                    self.portals.push(e);
+                    e.isNew = true;
+                    if (self.portals().length > 1)
+                        for (var i = 0; i < self.portals().length; i++) {
+
+                            if (self.portals()[i].group == e.group) {
+                                self.portals.splice(i, 0, e);
+                                break;
+                            }
+                        }
+                    else {
+                         self.portals.push(e);
+                    }
                     self.addFormShow(false);
                     notify('درگاه', 'درگاه مقصد مورد نظر شما با موفقیت ایجاد شد.', 'success');
+                    self.group('');
+                    self.iban_code('');
+                    self.title('');
                 },
                 complete: function () { }
             });

@@ -351,6 +351,7 @@ body {
     max-width: 800px;
     margin: auto;
     margin-top: 10px;
+    position:relative;
 }
 
     .r_row a {
@@ -440,3 +441,87 @@ body {
 #r_title {
     display: none;
 }
+
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select:focus,
+textarea {
+    font-size: 16px;
+}
+
+.page-grid{
+    overflow-y:auto;
+    overflow-x:hidden;
+    
+}
+.group-line {
+    transform: translate(0, -14px);
+    background-color: #fff;
+    width: fit-content;
+    margin: auto;
+    padding: 0 7px;
+}
+.group-line-border {
+    height: 1px;
+    border-bottom: 1px solid #eaeaea;
+    max-width: 800px;
+    margin: auto;
+}
+.group-title-box {
+    margin-top: 28px;
+    margin-bottom: -18px;
+}
+
+.flash-box {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #ff98001a;
+    margin-top: -5px;
+    margin-right: -5px;
+}
+@keyframes myflash {
+    0% {
+        opacity: 0;
+    }
+
+    14% {
+        opacity: 1;
+    }
+
+    28% {
+        opacity: 0;
+    }
+
+    44% {
+        opacity: 1;
+    }
+
+    59% {
+        opacity: 0;
+    }
+
+    79% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+.animation-flash{
+    animation: myflash 2.5s forwards;
+}
+

@@ -1,102 +1,77 @@
 ﻿@model PersonalPortalModel
 @using Newtonsoft.Json;
 @{
-    Layout = null;
+    Layout = "_LoginLayout";
 }
-<!DOCTYPE html>
-<html>
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #4CAF50 !important;
+    }
 
-<head>
-    <title>Repul</title>
+    .user_card {
+        background: #C8E6C9;
+    }
 
-    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
-    <link href="~/lib/pNotify/pnotify.custom.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
+    .brand_logo_container {
+        background: #4caf50;
+    }
+</style>
+<div id="login_form">
+    <form id="pay_form" action="/PersonalPortal/Pay/@Model.ID" method="post">
+        <div id="login_form_box" class="justify-content-center form_container">
+            @if (string.IsNullOrWhiteSpace(Model.Price))
+            {
 
-    <script src="~/lib/jquery/jquery-3.4.1.min.js"></script>
-    <script src="~/lib/knockout/knockout-3.4.2.js"></script>
-    <script src="~/lib/knockout/knockout.validation.min.js"></script>
-    <script src="~/lib/pNotify/pnotify.custom.min.js"></script>
-    <script src="~/js/notification.js"></script>
-
-</head>
-<body>
-    <div class="container h-100">
-        <div class="d-flex justify-content-center h-100">
-            <div class="user_card">
-                <div class="d-flex justify-content-center">
-                    <div class="brand_logo_container">
-                        <img src="~/images/logo.svg" class="brand_logo" alt="Logo">
+                <div class="" style="width:250px;margin:auto;">
+                    <div style="width:100%;">مبلغ</div>
+                    <input type="text" id="Price" name="Price" class="form-control "
+                           maxlength="10" style="text-align:right;margin-top:5px;" placeholder="ریال">
+                </div>
+            }
+            else
+            {
+                <div>
+                    <h2 style="text-align:center;">@(long.Parse(Model.Price).ToString("##,###")) ریال</h2>
+                </div>
+            }
+            <div style="height:20px;"></div>
+            @if (string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="" style="width:250px;margin:auto;">
+                    <div style="width:100%;">توضیحات</div>
+                    <input type="text" id="Description" name="Description" class="form-control " style="text-align:right;margin-top:5px;">
+                </div>
+            }
+            else
+            {
+                <div style="width:250px;margin:auto;">
+                    <div>توضیحات</div>
+                    <div>
+                        <h5>
+                            @Model.Description
+                        </h5>
                     </div>
                 </div>
-                <style>
-                    body,
-                    html {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        background: #4CAF50 !important;
-                    }
-                    .user_card{
-                        background: #C8E6C9;
-                    }
-                    .brand_logo_container{
-                            background: #4caf50;
-                    }
-                </style>
-                <div id="login_form">
-                    <form id="pay_form" action="/PersonalPortal/Pay/@Model.ID" method="post">
-                        <div id="login_form_box" class="justify-content-center form_container">
-                            @if (string.IsNullOrWhiteSpace(Model.Price))
-                            {
-
-                                <div class="" style="width:250px;margin:auto;">
-                                    <div style="width:100%;">مبلغ</div>
-                                    <input type="text" id="Price" name="Price" class="form-control "
-                                           maxlength="10" style="text-align:right;margin-top:5px;" placeholder="ریال">
-                                </div>
-                            }
-                            else
-                            {
-                                <div>
-                                    <h2 style="text-align:center;">@(long.Parse(Model.Price).ToString("##,###")) ریال</h2>
-                                </div>
-                            }
-                            <div style="height:20px;"></div>
-                            @if (string.IsNullOrWhiteSpace(Model.Description))
-                            {
-                                <div class="" style="width:250px;margin:auto;">
-                                    <div style="width:100%;">توضیحات</div>
-                                    <input type="text" id="Description" name="Description" class="form-control " style="text-align:right;margin-top:5px;">
-                                </div>
-                            }
-                            else
-                            {
-                                <div style="width:250px;margin:auto;">
-                                    <div>توضیحات</div>
-                                    <div>
-                                        <h5>
-                                            @Model.Description
-                                        </h5>
-                                    </div>
-                                </div>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(Model.Help))
-                            {
-                                <div style="width:250px;margin:auto;">
-                                    <div>راهنما</div>
-                                    <div>
-                                        <h5>@Model.Help</h5>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <div class="d-flex justify-content-center mt-3 login_container">
-                            <button type="submit" class="btn btn-success">پرداخت</button>
-                        </div>
-                    </form>
-                    <script>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Help))
+            {
+                <div style="width:250px;margin:auto;">
+                    <div>راهنما</div>
+                    <div>
+                        <h5>@Model.Help</h5>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" class="btn btn-success">پرداخت</button>
+        </div>
+    </form>
+    <script>
                         $("#pay_form").submit(function () {
                             var data = @(JsonConvert.SerializeObject(Model));
                             if (data.Description && !$("#Description").val()) {
@@ -108,11 +83,6 @@
                                 return false;
                             }
                         });
-                    </script>
-                </div>
+    </script>
+</div>
 
-            </div>
-        </div>
-    </div>
-</body>
-</html>

@@ -125,10 +125,10 @@
                 notify('', 'کد ملی را وارد نمایید!', 'error');
                 return;
             }
-            if (!isValidIranianNationalCode(reqJson.NatCode)) {
-                notify('', 'کد ملی اشتباه است!', 'error');
-                return;
-            }
+            //if (!isValidIranianNationalCode(reqJson.NatCode)) {
+            //    notify('', 'کد ملی اشتباه است!', 'error');
+            //    return;
+            //}
             var reqJson = ko.toJS(self);
             if (!reqJson.Username) {
                 notify('', 'نام کاربری را وارد نمایید!', 'error');
