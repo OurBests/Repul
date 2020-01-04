@@ -21,6 +21,24 @@ namespace web.Services
             return result.DataModel;
         }
 
+        public async Task<string> DeleteDestinationPortal(GetDestinationPortalModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<GetDestinationPortalModel>>("/dportal_delete", model);
+            return result.DataModel.ID;
+        }
+
+        public async Task<DestinationPortalModel> EditDestinationPortal(AddDestinationPortalModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<DestinationPortalModel>>("/dportal_edit", model);
+            return result.DataModel;
+        }
+
+        public async Task<IEnumerable<DestinationPortalModel>> GetUserGroupPortals(GroupPayModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<DestinationPortalModel>>>("/dportal_get", model);
+            return result.DataModel;
+        }
+
         public async Task<IEnumerable<GroupModel>> GetUserRegistredGroups(ServiceRequest model)
         {
             var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<GroupModel>>>("/groups_get", model);
@@ -37,6 +55,14 @@ namespace web.Services
         {
             var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<DestinationPortalModel>>>("/dportal_get", serviceRequest);
             return result?.DataModel?.OrderByDescending(x => x.Group).ToList() ?? new List<DestinationPortalModel>();
+        }
+
+        public async Task<DestinationPortalModel> UpdatePrice(AddDestinationPortalModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<DestinationPortalModel>>("/dportal_update_price", model);
+            return result.DataModel;
+
+
         }
     }
 }

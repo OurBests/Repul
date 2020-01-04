@@ -3,41 +3,67 @@
 }
 <div id="r_title">درگاه های شخصی</div>
 <div id="page_box">
-    <div class="page-grid" data-bind="foreach: portals">
-        <div class="r_row">
-            <div class="row">
-                <div class="col-md-3">
-                    <a data-bind="attr: {href: '/PersonalPortal/Pay/'+_id }" target="_blank">
-                        <span>لینک درگاه <i class="fa fa-link"></i></span>
-                    </a>
+    <div class="page-grid">
+        <!-- ko if: portals().length == 0-->
+        <div class="r_row  empty-result">
+            <i class="fa fa-info-circle"></i>
+            هنوز هیچ درگاهی تعریف نکرده اید ...
+        </div>
+        <!-- /ko -->
+        <div data-bind="foreach: portals">
+            <div class="r_row">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a data-bind="attr: {href: (title && title.length>0 ? '/'+title : '/PersonalPortal/Pay/' + _id)}" target="_blank">
+                            <span>لینک درگاه <i class="fa fa-link"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href data-bind="click: $parent.showTran" target="_blank">
+                            <span>تراکنش ها <i class="fa fa-link"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3" style="text-align:left;">
+                        <a href data-bind="click: $parent.delete" target="_blank" style="color:red;">
+                            <span><i class="fa fa-trash"></i></span>
+                        </a>
+                        <a href data-bind="click: $parent.openedit" target="_blank" style="color:black;">
+                            <span><i class="fa fa-edit"></i></span>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <a href data-bind="click: $parent.showTran" target="_blank">
-                        <span>تراکنش ها <i class="fa fa-link"></i></span>
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <span>شناسه حساب: </span>
-                    <span data-bind="text: firstAccount.accountId"></span>
-                </div>
-                <div class="col-md-3">
-                    <span>کد ملی: </span>
-                    <span data-bind="text: firstAccount.nationalCode"></span>
-                </div>
-                <div class="col-md-3">
-                    <span>تاریخ: </span>
-                    <span data-bind="text: jCreatedAt"></span>
-                </div>
-                <div class="col-md-3">
-                    <span>مبلغ: </span>
-                    <span data-bind="text: price"></span>
+                <div class="row">
+                    <div class="col-md-3">
+                        <span>شناسه حساب: </span>
+                        <span data-bind="text: firstAccount.accountId"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span>کد ملی: </span>
+                        <span data-bind="text: firstAccount.nationalCode"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span>تاریخ: </span>
+                        <span data-bind="text: jCreatedAt"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span>مبلغ: </span>
+                        <span data-bind="text: price"></span>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    @*<div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>*@
+    <div class="fixed-action-btn smooth-scroll" style="bottom: 45px; left: 24px;" data-bind="click: addItem">
+        <a class="btn-floating btn-lg red waves-effect waves-light">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
+
+
+
     <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -49,45 +75,44 @@
                         </div>
                         <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="price_show">
-                                <label class="custom-control-label" for="price_show">مبلغ توسط پرداخت کننده مشخص شود</label>
+                                <input type="checkbox" class="custom-control-input" id="price_show" data-bind="checked: priceChecked">
+                                <label class="custom-control-label" for="price_show">مبلغ توسط من مشخص شود</label>
                             </div>
-                            <div id="price_box" style="display:none;">
-                                <input type="text" class="form-control" data-bind="value: price" placeholder="مبلغ" />
+                            <div id="price_box" data-bind="visible: priceChecked">
+                                <input type="text" class="form-control" data-bind="currencyFormat: price" placeholder="مبلغ" data-format="price" />
                             </div>
-                            <script>
-                                $("#price_show").change(function () {
-                                    $("#price_box").toggle('fast');
-                                });
-                            </script>
+                            @*<script>
+                                    $("#price_show").change(function () {
+                                        $("#price_box").toggle('fast');
+                                    });
+                                </script>*@
                         </div>
                         <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="description_show">
-                                <label class="custom-control-label" for="description_show">توضیحات توسط پرداخت کننده مشخص شود</label>
+                                <input type="checkbox" class="custom-control-input" id="description_show" data-bind="checked: descriptionChecked">
+                                <label class="custom-control-label" for="description_show">توضیحات توسط من مشخص شود</label>
                             </div>
-                            <div id="description_box" style="display:none;">
+                            <div id="description_box" data-bind="visible: descriptionChecked">
                                 <input type="text" class="form-control" data-bind="value: description" placeholder="توضیحات" />
                             </div>
-                            <script>
-                                $("#description_show").change(function () {
-                                    $("#description_box").toggle('fast');
-                                });
-                            </script>
                         </div>
                         <div style="margin-top:20px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="help_show">
+                                <input type="checkbox" class="custom-control-input" id="help_show" data-bind="checked: helpChecked">
                                 <label class="custom-control-label" for="help_show">راهنمای پرداخت داشته باشد</label>
                             </div>
-                            <div id="help_box" style="display:none;">
+                            <div id="help_box" data-bind="visible: helpChecked">
                                 <input type="text" class="form-control" data-bind="value: help" placeholder="متن راهنما" />
                             </div>
-                            <script>
-                                $("#help_show").change(function () {
-                                    $("#help_box").toggle('fast');
-                                });
-                            </script>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="title_show" data-bind="checked: titleChecked">
+                                <label class="custom-control-label" for="title_show">درگاه دارای عنوان اختصاصی باشد(بصورت: pay...)</label>
+                            </div>
+                            <div id="help_box" data-bind="visible: titleChecked">
+                                <input type="text" class="form-control" data-bind="value: title" placeholder="مثال: Mihanpay" data-format="en"/>
+                            </div>
                         </div>
                     </div>
 
@@ -103,6 +128,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <!-- ko if: trans().length == 0-->
+                    <div class="r_row empty-result">
+                        <i class="fa fa-info-circle"></i>
+                        هیچ تراکنشی انجام نشده است...
+                    </div>
+                    <!-- /ko -->
                     <div class="tab-content" style="padding-top:20px;" data-bind="foreach: trans">
                         <div class="r_row">
                             <div class="row">
@@ -147,8 +178,13 @@
         self.addFormShow = ko.observable(false);
         self.showTransModal = ko.observable(false);
         self.price = ko.observable('');
+        self.priceChecked = ko.observable(false);
         self.description = ko.observable('');
+        self.descriptionChecked = ko.observable(false);
         self.help = ko.observable('');
+        self.helpChecked = ko.observable(false);
+        self.titleChecked = ko.observable(false);
+        self.title = ko.observable('');
         self.accountId = ko.observable('');
         self.reload = function () {
             $.ajax({
@@ -170,23 +206,95 @@
         };
 
         self.addItem = function () {
+            self.editId = '';
+            self.price();
+            self.priceChecked(false);
+            self.description();
+            self.descriptionChecked(false);
+            self.help();
+            self.helpChecked(false);
+            self.accountId('');
             self.addFormShow(true);
         }
         self.saveNewPortal = function () {
-            console.log(ko.toJSON(self));
-            $.ajax({
-                url: '/PersonalPortal/Add',
-                method: 'POST',
-                contentType: 'application/json;charset=utf8',
-                beforeSend: function () { },
-                data: ko.toJSON(self),
-                success: function (e) {
-                    self.portals.push(e);
-                    self.addFormShow(false);
-                    notify('درگاه شخصی', 'درگاه شخصی شما با موفقیت ایجاد شد.', 'success');
-                },
-                complete: function () { }
-            });
+            function submit() {
+                $.ajax({
+                    url: !!self.editId ? '/PersonalPortal/Edit' : '/PersonalPortal/Add',
+                    method: 'POST',
+                    contentType: 'application/json;charset=utf8',
+                    beforeSend: function () { },
+                    data: ko.toJSON(self),
+                    success: function (e) {
+                        self.portals.push(e);
+                        self.addFormShow(false);
+                        notify('درگاه شخصی', 'درگاه شخصی شما با موفقیت ایجاد شد.', 'success');
+                    },
+                    complete: function () { }
+                });
+            }
+            if (self.titleChecked()) {
+                if (!self.title().toString().endsWith('pay')) {
+                    notify('خطا', 'عنوان وارد شده باید با کلمه pay ختم شود!', 'error', '');
+                    return;
+                }
+                $.ajax({
+                    url: '/PersonalPortal/CheckTitleIsUnqiue',
+                    method: 'POST',
+                    contentType: 'application/json;charset=utf8',
+                    data: JSON.stringify({ title: self.title() }),
+                    success: function (e) {
+                        if (e && e.isUnique) {
+                            submit();
+                        } else {
+                            notify('خطا', 'عنوان وارد شده تکراری میباشد!', 'error', '');
+                            return;
+                        }
+                    }
+                })
+            } else {
+                submit();
+            }
+
+        }
+        self.delete = function (row) {
+            console.log(row);
+            confirmdialog("درگاه های شخصی", 'آیا از حذف این درگاه اطمینان دارید؟', 'alert', '', function () {
+                $.ajax({
+                    url: '/PersonalPortal/Delete',
+                    method: 'POST',
+                    data: JSON.stringify({ PersonalPortalID: row._id.toString() }),
+                    contentType: 'application/json;charset=utf8',
+                    success: function (e) {
+                        for (var i = 0; i < self.portals().length; i++) {
+
+                            if (self.portals()[i]._id == row._id) {
+                                self.portals.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                });
+            }, function () { });
+        }
+        self.openedit = function (row) {
+            console.log(row);
+            self.editId = row._id;
+
+            self.price(row.price);
+            self.priceChecked(!!row.price);
+
+            self.description(row.description);
+            self.descriptionChecked(!!row.description);
+
+            self.help(row.help);
+            self.helpChecked(!!row.help);
+
+            self.title(row.title);
+            self.titleChecked(!!row.title);
+
+            self.accountId(row.accountId);
+
+            self.addFormShow(true);
         }
         self.showTran = function (row) {
             self.trans(row.payments);
@@ -194,6 +302,7 @@
         }
         self.reload();
     };
+
     var model = new viewModel([]);
     ko.applyBindings(model, $("#page_box")[0]);
 </script>

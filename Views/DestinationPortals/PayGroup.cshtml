@@ -1,0 +1,130 @@
+﻿@model IEnumerable<DestinationPortalModel>
+@using Newtonsoft.Json;
+@{
+    Layout = "_LoginLayout";
+    int splitPrice = 49000000;
+    var paid = Model.First().GroupPaid;
+}
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #7E57C2 !important;
+    }
+    .user_card{
+        height:450px;
+    }
+    .brand_logo_container{
+        margin-top:50px;
+    }
+</style>
+<div id="login_form">
+    @{
+        var sum = Model.Sum(x => x.Price);
+    }
+    <div id="login_form_box" class="justify-content-center form_container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>عنوان</th>
+                    <th>مبلغ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Price.ToString("##,###") تومان</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td style="font-weight:bold;">جمع</td>
+                    <td style="font-weight:bold;">@sum.ToString("##,###") تومان</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    @if (sum <= splitPrice)
+    {
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <form id="pay_form" action="/DestinationPortals/PayGroupSubmit/@ViewBag.GroupId" method="post">
+                <input type="hidden" name="Price" value="@(sum+Pricing.CalcWagePrice(sum))" />
+                <button type="submit" class="btn btn-primary">
+                    پرداخت
+                    <div class="price-box">
+                        @sum.ToString("##,###")
+                        <div><i class="fa fa-plus"></i> @Pricing.CalcWagePrice(sum)</div>
+                    </div>
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div style="font-size: 15px;color: #000;text-align: justify;">
+            <i class="fa fa-info-circle"></i>
+            به علت محدودیت پرداخت @splitPrice.ToString("##,###") تومانی شاپرک در هر تراکنش لطفا مبلغ کل را در تراکنشهای زیر انجام دهید.
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container">
+            @{
+                var countOfbtns = (int)Math.Ceiling((decimal)sum / splitPrice);
+                var mod = sum % splitPrice;
+            }
+            @for (int i = 0; i < countOfbtns - 1; i++)
+            {
+
+                <form id="pay_form" action="/DestinationPortals/PayGroupSubmit/@ViewBag.GroupId" method="post" style="position:relative;">
+                    @if (paid >= splitPrice)
+                    {
+                        <div class="paid-box"><span>پرداخت شد <i class="fa fa-check-circle" style="vertical-align:middle;"></i></span></div>
+                    }
+                    <input type="hidden" name="Price" value="@(splitPrice+Pricing.CalcWagePrice(splitPrice))" />
+                    <button type="submit" class="btn @(paid>=splitPrice?"btn-success disabled":"btn-primary")">
+                        پرداخت
+                        <div class="price-box">
+                            @splitPrice.ToString("##,###")
+                            <div><i class="fa fa-plus"></i> @Pricing.CalcWagePrice(splitPrice)</div>
+                        </div>
+                        @Html.GetPersianNumbering(i)
+                    </button>
+                </form>
+                paid -= splitPrice;
+            }
+            @if (mod > 0)
+            {
+
+                <form id="pay_form" action="/DestinationPortals/PayGroupSubmit/@ViewBag.GroupId" method="post">
+                    @if (paid >= mod)
+                    {
+                        <div class="paid-box">پرداخت شد</div>
+                    }
+                    <input type="hidden" name="Price" value="@(mod+Pricing.CalcWagePrice(mod))" />
+                    <button type="submit" class="btn @(paid>=mod?"btn-success disabled":"btn-primary")">
+                        پرداخت
+
+                        <div class="price-box">
+                            @mod.ToString("##,###")
+                            <div><i class="fa fa-plus"></i> @Pricing.CalcWagePrice(mod)</div>
+                        </div>
+
+                        مابقی
+                    </button>
+                </form>
+
+            }
+
+
+        </div>
+    }
+
+
+
+
+
+</div>

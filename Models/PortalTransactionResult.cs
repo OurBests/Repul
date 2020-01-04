@@ -21,7 +21,7 @@ namespace web.Models
         public string UpdatedAt { get; set; }
         public string JUpdatedAt => DateUtils.ToJalaliString(UpdatedAt);
         public string Description { get; set; }
-        public string Price{ get; set; }
+        public long Price{ get; set; }
 
     }
 }

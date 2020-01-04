@@ -44,10 +44,32 @@ namespace web.Controllers
             var result = await _personalPortalService.AddPersonalPortal(model);
             return Json(result);
         }
+        public async Task<IActionResult> CheckTitleIsUnqiue([FromBody] TitleModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            return Json(await _personalPortalService.CheckTitleIsUnqiue(model));
+        }
+        public async Task<IActionResult> Delete([FromBody] GetPersonalPortalModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _personalPortalService.DeletePersonalPortal(model);
+            return Json(result);
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{PersonalPortalId}pay")]
+        public async Task<IActionResult> Pay([FromRoute] PayModel model)
+        {
+            model.PersonalPortalId += "pay";
+            var result = await _personalPortalService.GetPersonalPortal(model);
+            return View(result);
+        }
         [HttpGet]
         [AllowAnonymous]
         [Route("PersonalPortal/Pay/{PersonalPortalId}")]
-        public async Task<IActionResult> Pay([FromRoute] PayModel model)
+        public async Task<IActionResult> PayWithId([FromRoute] PayModel model)
         {
             var result = await _personalPortalService.GetPersonalPortal(model);
             return View(result);

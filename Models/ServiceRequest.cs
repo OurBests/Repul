@@ -10,5 +10,6 @@ namespace web.Models
         public string ID{ get; set; }
         public string Hash { get; set; }
         public string Version => "1";
+        
     }
 }

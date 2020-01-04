@@ -12,5 +12,9 @@ namespace web.Interfaces
         Task<DestinationPortalModel> AddDestinationPortal(AddDestinationPortalModel model);
         Task<DestinationPortalModel> GetUserRegistredPortal(GetDestinationPortalModel model);
         Task<IEnumerable<GroupModel>> GetUserRegistredGroups(ServiceRequest model);
+        Task<IEnumerable<DestinationPortalModel>> GetUserGroupPortals(GroupPayModel model);
+        Task<string> DeleteDestinationPortal(GetDestinationPortalModel model);
+        Task<DestinationPortalModel> EditDestinationPortal(AddDestinationPortalModel model);
+        Task<DestinationPortalModel> UpdatePrice(AddDestinationPortalModel model);
     }
 }

@@ -15,6 +15,13 @@ namespace web.Common
             DateTime dt = new DateTime(int.Parse(splited[0]), int.Parse(splited[1]), int.Parse(splited[2]), pc);
             return dt;
         }
+
+        internal static string GetMonthName(int month)
+        {
+            var months = new string[] { "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند" };
+            return months[month];
+        }
+
         public static string ToGregorianString(string jalali)
         {
             return ToGregorianDate(jalali).ToString(CultureInfo.InvariantCulture);
@@ -27,6 +34,7 @@ namespace web.Common
         }
         public static string ToJalaliString(string gregorianDate)
         {
+            if (string.IsNullOrWhiteSpace(gregorianDate)) return "";
             var calendar = new PersianCalendar();
             var date = DateTime.Parse(gregorianDate);
             return

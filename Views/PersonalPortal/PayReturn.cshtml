@@ -3,45 +3,39 @@
     Layout = "_LoginLayout";
 }
 
-                <style>
-                  body,
-                    html {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        background: #4CAF50 !important;
-                    }
-                    .user_card{
-                        background: #C8E6C9;
-                    }
-                    .brand_logo_container{
-                            background: #4caf50;
-                    }
-                </style>
-                <div id="login_form">
-                    <div id="login_form_box" class="justify-content-center form_container">
-                        @if (ViewBag.OK == "OK")
-                        {
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #4CAF50 !important;
+    }
+</style>
+<div id="login_form">
+    <div id="login_form_box" class="justify-content-center form_container">
+        @if (ViewBag.OK == "OK")
+        {
 
-                            <div style="width:250px;margin:auto;">
-                                <div>
-                                    <h3>
-                                        پرداخت با موفقیت انجام شد
-                                    </h3>
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div style="width:250px;margin:auto;">
-                                <div>
-                                    <h3>
-                                        پرداخت با موفقیت انجام نشد
-                                    </h3>
-                                </div>
-                            </div>
-                        }
-
-                    </div>
+            <div style="width:250px;margin:auto;">
+                <div>
+                    <h3>
+                        پرداخت با موفقیت انجام شد
+                    </h3>
                 </div>
+            </div>
+        }
+        else
+        {
+            <div style="width:250px;margin:auto;">
+                <div>
+                    <h3>
+                        پرداخت با موفقیت انجام نشد
+                    </h3>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
 

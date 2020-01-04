@@ -4,46 +4,115 @@
 }
 <div id="r_title">درگاه های مقصد</div>
 <div id="page_box">
-    <div class="page-grid" data-bind="foreach: portals">
-        <!-- ko if: $index() === 0 || $parent.portals()[$index() - 1].group !== group -->
-        <div class="group-title-box">
-            <div class="group-line-border"></div>
-            <div class="group-line" data-bind="text: group" style="text-align:center;"></div>
+
+
+    <div class="page-grid">
+        <!-- ko if: portals().length == 0-->
+        <div class="r_row empty-result">
+            <i class="fa fa-info-circle"></i>
+            هنوز هیچ درگاهی تعریف نکرده اید...
         </div>
         <!-- /ko -->
-        <div class="r_row">
-
-            <div class="animation-flash flash-box" data-bind="visible: isNew"></div>
-
-            <div class="row">
-                <div class="col-md-3">
-                    <a data-bind="attr: {href: '/DestinationPortals/Pay/'+_id }" target="_blank">
-                        <span>لینک پرداخت <i class="fa fa-link"></i></span>
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href data-bind="click: $parent.showTran" target="_blank">
-                        <span>تاریخچه پرداخت ها <i class="fa fa-link"></i></span>
-                    </a>
+        <div data-bind="foreach: portals">
+            <!-- ko if: $index() === 0 || $parent.portals()[$index() - 1].group !== group -->
+            <div class="group-title-box">
+                <div class="group-line-border">
+                    <div style="display:inline-block;width:32%;">
+                        <div class="group-history" style="transform: translate(0, -14px);text-align:right;">
+                            <a href data-bind="click: $parent.showGroupTran" target="_blank" style="background-color:#fff; padding:0px 5px;white-space: nowrap;">
+                                <span>تاریخچه پرداخت ها</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="display:inline-block;width:32%;">
+                        <div class="group-line" data-bind="text: group" style="text-align:center;font-weight:bold;"></div>
+                    </div>
+                    <div style="display:inline-block;width:32%;">
+                        <div class="group-pay" style="transform: translate(0, -14px);text-align:left;">
+                            <a data-bind="attr: {href: '/DestinationPortals/PayGroup/'+ groupId }" target="_blank" style="background-color:#fff; padding:0px 5px;">
+                                <span>پرداخت <i class="fa fa-link"></i></span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <span>شناسه درگاه: </span>
-                    <span data-bind="text: dportalId"></span>
+            <!-- /ko -->
+            <div class="r_row">
+
+                <div class="animation-flash flash-box" data-bind="visible: isNew"></div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <a data-bind="attr: {href: '/DestinationPortals/Pay/'+_id }" target="_blank">
+                            <span>پرداخت <i class="fa fa-link"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href data-bind="click: $parent.showTran" target="_blank">
+                            <span>تاریخچه پرداخت ها</span>
+                        </a>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3" style="text-align:left;">
+                        <a href data-bind="click: $parent.delete" target="_blank" style="color:red;">
+                            <span><i class="fa fa-trash"></i></span>
+                        </a>
+                        <a href data-bind="click: $parent.openedit" target="_blank" style="color:black;">
+                            <span><i class="fa fa-edit"></i></span>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <span>عنوان : </span>
-                    <span data-bind="text: title"></span>
+                <div class="row">
+                    <div class="col-md-3">
+                        <span>شناسه درگاه: </span>
+                        <span data-bind="text: dportalId"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span>عنوان : </span>
+                        <span data-bind="text: title"></span>
+                    </div>
+                    <div class="col-md-3 main-price-box" data-bind="visible: !priceEdit()" style="position:relative;">
+                        <span>مبلغ: </span>
+                        <span data-bind="text: price"></span>
+                        <div data-bind="click: $parent.changePrice" class="edit-price-box"><i class="fa fa-edit"></i></div>
+                    </div>
+                    <div class="col-md-3" data-bind="visible: priceEdit()">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control"
+                                   aria-describedby="button-addon2" style="height:30px;padding: 3px;" data-bind="value: price" autofocus>
+                            <div class="input-group-append">
+                                <button style="height:30px;" class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
+                                        type="button" id="button-addon2" data-bind="click: $parent.updatePrice">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <span>تاریخ: </span>
+                        <span data-bind="text: jCreatedAt"></span>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <span>تاریخ: </span>
-                    <span data-bind="text: jCreatedAt"></span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span>شماره شبا:</span>
+                        <span data-bind="text: iban_code"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <span>شماره تلفن:</span>
+                        <span data-bind="text: phone"></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
+    <div class="fixed-action-btn smooth-scroll" style="bottom: 45px; left: 24px;" data-bind="click: addItem">
+        <a class="btn-floating btn-lg red waves-effect waves-light">
+            <i class="fa fa-plus"></i>
+        </a>
+    </div>
     <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -61,13 +130,25 @@
                         <div style="margin-top:20px;">
                             <div>
                                 <label>شماره شبا</label>
-                                <input type="text" class="form-control" data-bind="value: iban_code" />
+                                <input type="text" class="form-control" data-bind="value: iban_code" data-format="iban" maxlength="26" />
                             </div>
                         </div>
                         <div style="margin-top:20px;">
                             <div>
                                 <label>عنوان</label>
-                                <input type="text" class="form-control" data-bind="value: title" />
+                                <input type="text" class="form-control" data-bind="value: title" maxlength="50" />
+                            </div>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <div>
+                                <label>مبلغ(تومان)</label>
+                                <input type="text" class="form-control" data-bind="currencyFormat: price" data-format="price" maxlength="10" />
+                            </div>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <div>
+                                <label>شماره تماس</label>
+                                <input type="text" class="form-control" data-bind="value: phone" maxlength="11" data-format="number" />
                             </div>
                         </div>
                     </div>
@@ -79,11 +160,16 @@
             </div>
         </div>
     </div>
-
     <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: showTransModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <!-- ko if: trans().length == 0-->
+                    <div class="r_row empty-result">
+                        <i class="fa fa-info-circle"></i>
+                        هیچ تراکنشی انجام نشده است...
+                    </div>
+                    <!-- /ko -->
                     <div class="tab-content" style="padding-top:20px;" data-bind="foreach: trans">
                         <div class="r_row">
                             <div class="row">
@@ -96,6 +182,8 @@
                                     <span data-bind="text: longAuthority"></span>
                                 </div>
                             </div><div class="row">
+
+
                                 <div class="col-md-6">
                                     <span>مبلغ: </span>
                                     <span data-bind="text: price"></span>
@@ -130,7 +218,11 @@
         self.group = ko.observable('');
         self.iban_code = ko.observable('');
         self.title = ko.observable('');
+        self.price = ko.observable('');
+        self.phone = ko.observable('');
+        self.editId = ko.observable('');
         self.reload = function () {
+
             $.ajax({
                 url: '/DestinationPortals/Get',
                 method: 'POST',
@@ -138,7 +230,9 @@
                 success: function (e) {
                     for (var i = 0; i < e.length; i++) {
                         e[i].isNew = false;
+                        e[i].priceEdit = ko.observable(false);
                     }
+
                     self.portals(e);
                 }
             });
@@ -151,39 +245,102 @@
                 }
             });
         };
+        self.showGroupTran = function (row) {
 
+            var groupPayments = self.groups().filter(function (item) { if (item._id == row.groupId) return item; })[0].payments;
+            self.trans(groupPayments);
+            self.showTransModal(true);
+        }
         self.addItem = function () {
+            self.editId('');
             self.addFormShow(true);
         }
-        self.saveNewPortal = function () {
-            debugger;
-            var existsInGroups = self.groups().filter(function (item, i) { return item.name == self.group(); });
-            if (existsInGroups.length == 0)
-                self.groups.push({ name: self.group() });
+        self.changePrice = function (row) {
+            console.log(row);
+            row.priceEdit(true);
+        }
+        self.updatePrice = function (row) {
+            console.log(row);
+            console.log(row.price);
             $.ajax({
-                url: '/DestinationPortals/Add',
+                url: '/DestinationPortals/UpdatePrice',
                 method: 'POST',
                 contentType: 'application/json;charset=utf8',
                 beforeSend: function () { },
-                data: ko.toJSON(self),
+                data: JSON.stringify({ editId: row._id, price: row.price }),
                 success: function (e) {
                     e.isNew = true;
+                    e.priceEdit = ko.observable(false);
+                    for (var i = 0; i < self.portals().length; i++) {
+                        if (self.portals()[i]._id == e._id) {
+                            self.portals.splice(i, 1);
+                            break;
+                        }
+                    }
                     if (self.portals().length > 1)
                         for (var i = 0; i < self.portals().length; i++) {
-
                             if (self.portals()[i].group == e.group) {
                                 self.portals.splice(i, 0, e);
                                 break;
                             }
                         }
                     else {
-                         self.portals.push(e);
+                        self.portals.push(e);
+                    }
+                },
+                complete: function () { }
+            });
+        }
+        self.saveNewPortal = function () {
+
+            if (!self.iban_code() || self.iban_code().length != 26) {
+                notify('', 'شماره شبا وارد شده صحیح نمیباشد.', 'error');
+                return;
+            }
+            if (!self.title()) {
+                notify('', 'عنوان حساب را وارد نمایید.', 'error');
+                return;
+            }
+            if (!self.price()) {
+                notify('', 'لطفا مبلغ را وارد نمایید', 'error');
+                return;
+            }
+            var existsInGroups = self.groups().filter(function (item, i) { return item.name == self.group(); });
+            if (existsInGroups.length == 0)
+                self.groups.push({ name: self.group() });
+            $.ajax({
+                url: !!self.editId() ? '/DestinationPortals/Edit' : '/DestinationPortals/Add',
+                method: 'POST',
+                contentType: 'application/json;charset=utf8',
+                beforeSend: function () { },
+                data: ko.toJSON(self),
+                success: function (e) {
+                    e.isNew = true;
+                    e.priceEdit = ko.observable(false);
+                    if (!!self.editId()) {
+                        for (var i = 0; i < self.portals().length; i++) {
+                            if (self.portals()[i]._id == e._id) {
+                                self.portals.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                    if (self.portals().length > 1)
+                        for (var i = 0; i < self.portals().length; i++) {
+                            if (self.portals()[i].group == e.group) {
+                                self.portals.splice(i, 0, e);
+                                break;
+                            }
+                        }
+                    else {
+                        self.portals.push(e);
                     }
                     self.addFormShow(false);
                     notify('درگاه', 'درگاه مقصد مورد نظر شما با موفقیت ایجاد شد.', 'success');
                     self.group('');
                     self.iban_code('');
                     self.title('');
+                    self.price('');
                 },
                 complete: function () { }
             });
@@ -191,6 +348,34 @@
         self.showTran = function (row) {
             self.trans(row.payments);
             self.showTransModal(true);
+        }
+        self.delete = function (row) {
+            console.log(row);
+            confirmdialog("درگاه های مقصد", 'آیا از حذف این درگاه اطمینان دارید؟', 'alert', '', function () {
+                $.ajax({
+                    url: '/DestinationPortals/Delete',
+                    method: 'POST',
+                    data: JSON.stringify({ DestinationPortalId: row._id.toString() }),
+                    contentType: 'application/json;charset=utf8',
+                    success: function (e) {
+                        for (var i = 0; i < self.portals().length; i++) {
+
+                            if (self.portals()[i]._id == row._id) {
+                                self.portals.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                });
+            }, function () { });
+        }
+        self.openedit = function (row) {
+            self.group(row.group);
+            self.iban_code(row.iban_code);
+            self.title(row.title);
+            self.price(row.price);
+            self.editId(row._id);
+            self.addFormShow(true);
         }
         self.reload();
     };

@@ -1,59 +1,75 @@
 ﻿@{ 
     ViewData["Title"] = "حساب های بانکی";
 }
-<div id="page_box">
-    <div data-bind="foreach: accounts">
-        <div class="r_row">
-            <div class="row">
-                <div class="col-md-4">
-                    <span>شناسه: </span>
-                    <span data-bind="text: accountId"></span>
-                </div>
-                <div class="col-md-4">
-                    <span>کد ملی: </span>
-                    <span data-bind="text: nationalCode"></span>
-                </div>
-                <div class="col-md-4">
-                    <span>تاریخ: </span>
-                    <span data-bind="text: jCreatedAt"></span>
-                </div>
+    <div id="page_box">
+
+        <div class="page-grid">
+            <!-- ko if: accounts().length == 0-->
+            <div class="r_row empty-result">
+                <i class="fa fa-info-circle"></i>
+                هنوز هیچ حسابی تعریف نکرده اید...
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span>شماره شبا: </span>
-                    <span data-bind="text: ibaN_code"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="add_row_btn btn btn-success" data-bind="click: addItem"><i class="fa fa-plus"></i></div>
-    <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="tab-content" style="padding-top:10px;">
-                        <div>
-                            <label>شماره شبا</label>
-                            <input type="text" class="form-control" data-bind="value: IBANCode" />
+            <!-- /ko -->
+            <div data-bind="foreach: accounts">
+                <div class="r_row">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span>شناسه: </span>
+                            <span data-bind="text: accountId"></span>
                         </div>
-                        <div style="margin-top:10px;">
-                            <label>کد ملی</label>
-                            <input type="text" class="form-control" data-bind="value: NatCode" />
+                        <div class="col-md-4">
+                            <span>کد ملی: </span>
+                            <span data-bind="text: nationalCode"></span>
                         </div>
-                        <div style="margin-top:10px;">
-                            <label>تاریخ تولد</label>
-                            <input type="text" class="form-control" data-bind="value: Birthdate" />
+                        <div class="col-md-4">
+                            <span>تاریخ: </span>
+                            <span data-bind="text: jCreatedAt"></span>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span>شماره شبا: </span>
+                            <span data-bind="text: ibaN_code"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <button class="btn btn-success" data-bind="click: saveNewAccount">ثبت</button>
+            </div>
+        </div>
+
+
+
+        <div class="fixed-action-btn smooth-scroll" style="bottom: 45px; left: 24px;" data-bind="click: addItem">
+            <a class="btn-floating btn-lg red waves-effect waves-light">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+        <div class="r modal fade" tabindex="-1" role="dialog" data-bind="modal: addFormShow">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="tab-content" style="padding-top:10px;">
+                            <div>
+                                <label>شماره شبا</label>
+                                <input type="text" class="form-control" data-bind="value: IBANCode" data-format="iban" />
+                            </div>
+                            <div style="margin-top:10px;">
+                                <label>کد ملی</label>
+                                <input type="text" class="form-control" data-bind="value: NatCode" data-format="price" maxlength="10" />
+                            </div>
+                            <div style="margin-top:10px;">
+                                <label>تاریخ تولد</label>
+                                <input type="text" class="form-control" data-bind="value: Birthdate" data-format="date" maxlength="10" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn btn-success" data-bind="click: saveNewAccount">ثبت</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <script>
     //$("#first_tab a").click();
@@ -79,6 +95,18 @@
             });
         };
         self.saveNewAccount = function () {
+            if (!self.IBANCode()) {
+                notify("خطا", 'شماره شبا را وارد نمایید!', 'error');
+                return;
+            }
+            if (!self.NatCode()) {
+                notify("خطا", 'کد ملی را وارد نمایید!', 'error');
+                return;
+            }
+            if (!self.Birthdate) {
+                notify("خطا", 'تاریخ تولد را وارد نمایید!', 'error');
+                return;
+            }
             $.ajax({
                 url: '/BankAccounts/Add',
                 method: 'POST',

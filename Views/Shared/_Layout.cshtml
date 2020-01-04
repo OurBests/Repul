@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ریپول</title>
+    <title>@ViewData["Title"] - تیپول</title>
     <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/pNotify/pnotify.custom.min.css" rel="stylesheet" />
@@ -18,7 +18,8 @@
     <script src="~/lib/bootstrap/bootstrap.min.js"></script>
     <script src="~/js/notification.js"></script>
     <script src="~/lib/bootstrap/mdb.min.js"></script>
-    <script src="~/lib/bodyscroll/bodyscroll.js"></script>
+    <script src="~/lib/shieldui/shieldui-all.min.js"></script>
+    <script src="~/lib/inputformat/input_format.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -26,15 +27,16 @@
         <div id="sidebar-wrapper" class="close-in-small">
             <div id="menu_toggle_btn"><i class="fa fa-bars"></i></div>
             <div id="logo_box" >
-                <img class="sidebar-logo" src="~/images/logo.svg" />
+                <img class="sidebar-logo" src="~/images/logo_white.svg" />
             </div>
             <div style="display: flex;">
                 <ul class="sidebar-nav">
-                    <li><a href="@Url.Action("Index","TransactionHistory")"><i class="fa fa-exchange-alt"></i> تاریخچه تراکنش ها</a></li>
+                    @*<li><a href="@Url.Action("Index","TransactionHistory")"><i class="fa fa-exchange-alt"></i> تاریخچه تراکنش ها</a></li>*@
+                    <li><a href="@Url.Action("Index","Report")"><i class="fa fa-cubes"></i> داشبورد</a></li>
                     <li><a href="@Url.Action("Index","PersonalPortal")"><i class="fa fa-cubes"></i> درگاه های شخصی</a></li>
-                    <li><a href="@Url.Action("Index","DestinationPortals")"><i class="fa fa-database"></i> درگاه های مقصد</a></li>
+                    <li><a href="@Url.Action("Index","DestinationPortals")"><i class="fa fa-database"></i> حساب های مقصد</a></li>
                     <li><a href="@Url.Action("Index","BankAccounts")"><i class="fa fa-credit-card"></i> حساب های بانکی</a></li>
-                    <li><a href="@Url.Action("Index","ChargeAccount")"><i class="fa fa-battery"></i> شارژ حساب</a></li>
+                    @*<li><a href="@Url.Action("Index","ChargeAccount")"><i class="fa fa-battery"></i> شارژ حساب</a></li>*@
                     <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-user"></i> پروفایل</a></li>
                     <li><a href="@Url.Action("Index","Setting")"><i class="fa fa-cog"></i> تنظیمات</a></li>
                 </ul>

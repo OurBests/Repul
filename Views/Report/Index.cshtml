@@ -1,0 +1,190 @@
+﻿
+@{
+    Layout = null;
+    var totals = ViewBag.Totals as ReportTotalModel;
+    var yearPays = (ViewBag.YearPays as IEnumerable<DatePayModel>);
+    var yearGraph = yearPays.GroupBy(x => x.JDateMonthYear).Select(x => new { x.Key, Price = x.Sum(t => t.Price) });
+}
+@* درگاه های شخصی ایجاد شده + گردش حساب هر کدام  ، یه نموداری از گردش کلی اکانت ، اخرین تراکنش ها + صورتحساب معتبر مورد استفاده برای حسابداری شرکت ها ، ارتباط با پشتیبانی  *@
+<script src="~/lib/chart/chart.js"></script>
+<div id="r_title">داشبورد</div>
+<div id="page_box">
+    <div class="row mt-2">
+        <div class="col-xl-3 col-md-6 col-12">
+            <div class="report-number-box bg-b-black">
+                <span class="report-info-box-icon"><i class="fa fa-wallet"></i></span>
+                <div class="report-info-box-content">
+                    <h3>کیف پول</h3>
+                    <h4>@totals.CurrentMoney.ToString("##,###") تومان</h4>
+                    <h5>&shy;</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12">
+            <div class="report-number-box bg-b-orange">
+                <span class="report-info-box-icon"><i class="fa fa-cubes"></i></span>
+                <div class="report-info-box-content">
+                    <h3>درگاه های شخصی</h3>
+                    <h4>@totals.TotalPayPortalCount</h4>
+                    <h5>@totals.TotalPayPortal.ToString("##,###") تومان</h5>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12">
+            <div class="report-number-box bg-b-purple">
+                <span class="report-info-box-icon"><i class="fa fa-database"></i></span>
+                <div class="report-info-box-content">
+                    <h3>حساب های مقصد</h3>
+                    <h4>@totals.TotalPayDPortalCount</h4>
+                    <h5>@totals.TotalPayDPortal.ToString("##,###") تومان</h5>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12">
+            <div class="report-number-box bg-b-cyan">
+                <span class="report-info-box-icon"><i class="fa fa-money-bill-wave"></i></span>
+                <div class="report-info-box-content">
+                    <h3>آخرین پرداخت</h3>
+                    <h4>@totals.JLastPayDate</h4>
+                    <h5>@totals.LastPay.ToString("##,###") تومان</h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+
+            <div class="card-body">
+                @foreach (var item in yearPays.Take(8))
+                {
+                    <div class="report-row-recent row">
+                        <div class="col-md-4 recent-box">@item.Date.ToString("HH:mm") @item.JDate</div>
+                        <div class="col-md-4 recent-box">
+                            @item.Price.ToString("##,###") تومان
+                            @if (item.Status == "OK")
+                            {
+                                <i class="fa fa-check" style="color:#00ff21"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times" style="color:#9c1e1e"></i>
+                            }
+                        </div>
+                        <div class="col-md-4 recent-box">
+                            @item.PersianType
+                            <a href="" style="font-size:12px;"> @item.Id</a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card card-box">
+                <div class="card-header">
+                    تراکنش های سال
+                </div>
+                <div class="card-body no-padding height-9">
+                    <div class="row">
+                        <canvas id="chart1" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="row">
+        <div class="col-md-12">
+            <div class="card card-box">
+                <div class="card-header">
+                    صورتحساب
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>مبلغ</th>
+                                <th>تاریخ</th>
+                                <th>ساعت</th>
+                                <th>شرح</th>
+                                <th>دسته</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>15,000,000 تومان</td>
+                                <td>1398/08/01</td>
+                                <td>20:35</td>
+                                <td>پرداخت حقوق پرسنل</td>
+                                <td>حساب مقصد</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>6,500,000 تومان</td>
+                                <td>1398/07/12</td>
+                                <td>15:40</td>
+                                <td>دستمزد سرویس آسانسور</td>
+                                <td>درگاه شخص</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>78,500,000 تومان</td>
+                                <td>1398/07/30</td>
+                                <td>23:10</td>
+                                <td>هزینه تعمیر لوله کشی</td>
+                                <td>حساب مقصد</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>15,000,000 تومان</td>
+                                <td>1398/08/01</td>
+                                <td>20:35</td>
+                                <td>پرداخت حقوق پرسنل</td>
+                                <td>حساب مقصد</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>6,500,000 تومان</td>
+                                <td>1398/07/12</td>
+                                <td>15:40</td>
+                                <td>دستمزد سرویس آسانسور</td>
+                                <td>درگاه شخص</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>78,500,000 تومان</td>
+                                <td>1398/07/30</td>
+                                <td>23:10</td>
+                                <td>هزینه تعمیر لوله کشی</td>
+                                <td>حساب مقصد</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>*@
+
+</div>
+<script>
+    var ctx = document.getElementById('chart1').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @(Json.Serialize(yearGraph.Select(x=>x.Key))),
+            datasets: [{
+                label: 'تراکنش ها',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: @(Json.Serialize(yearGraph.Select(x=>x.Price)))
+            }]
+        },
+        options: {}
+    });
+</script>

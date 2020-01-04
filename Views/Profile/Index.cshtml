@@ -1,0 +1,168 @@
+﻿@model UserProfileModel
+@{
+    Layout = null;
+}
+
+<div id="r_title">پروفایل</div>
+<div id="page_box">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body no-padding height-9">
+                    <div>
+                        <label for="UserName">نام کاربری</label>
+                        <input type="text" class="form-control" value="@Model.Username" disabled />
+                    </div>
+                    <div>
+                        <label for="Phone">شماره موبایل</label>
+                        <input type="text" class="form-control" value="@Model.Phone" disabled />
+                    </div>
+                    <div>
+                        <label for="NatCode">کد ملی </label>
+                        <input type="text" id="NatCode" name="NatCode" class="form-control" value="@Model.NatCode" maxlength="10" data-format="number" />
+                    </div>
+                    <div>
+                        <label for="NameShop">عنوان فعالیت </label>
+                        <input type="text" id="NameShop" name="NameShop" class="form-control" value="@Model.NameShop" maxlength="20" />
+                    </div>
+                    <div>
+                        <label for="FirstName">نام </label>
+                        <input type="text" id="FirstName" name="FirstName" class="form-control" value="@Model.FirstName" maxlength="20" />
+                    </div>
+                    <div>
+                        <label for="LastName">نام خانوادگی</label>
+                        <input type="text" id="LastName" name="LastName" class="form-control" value="@Model.LastName" maxlength="20" />
+                    </div>
+                    <div>
+                        <label for="BirthDay">تاریخ تولد</label>
+                        <input type="text" id="BirthDay" name="BirthDay" class="form-control" value="@Model.BirthDay" maxlength="10" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="row" style="padding:10px;">
+                    <div class="col-md-6">
+                        <div class="profile-info-row">
+                            <div class="row-title">کیف پول</div>
+                            <div class="row-value">@Model.Money.ToString("##,###") تومان</div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="row-title">
+                                آخرین ورود
+                            </div>
+                            <div class="row-value">
+                                1398/08/10 21:30
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="row-title">
+                                آخرین فعالیت
+                            </div>
+                            <div class="row-value">
+                                1398/08/15 17:13
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <a id="change_avatar_btn" style="color:#0094ff">تغییر آواتار</a>
+                            <input type="file" id="Avatar_file" style="width:1px;height:1px;opacity:0;" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-image-box">
+                            <img id="avatar_image" src="@Url.Action("Image","File",new { path=Model.Avatar})" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body no-padding height-9">
+                    <div>
+                        <label for="CardBank">شماره کارت</label>
+                        <input type="text" id="CardBank" name="CardBank" class="form-control" value="@Model.CardBank" data-format="cardban" maxlength="19" style="text-align:left;direction:ltr;" />
+                    </div>
+                    <div>
+                        <label for="HesabBank">شماره حساب</label>
+                        <input type="text" id="HesabBank" name="HesabBank" class="form-control" value="@Model.HesabBank" data-format="iban" />
+                    </div>
+                    <div>
+                        <label for="ShebaBank">شماره شبا</label>
+                        <input type="text" id="ShebaBank" name="ShebaBank" class="form-control" value="@Model.ShebaBank" style="text-align:left;direction:ltr;" data-format="number" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body no-padding height-9">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="CardBank">تصویر کارت ملی</label>
+                            <div class="upload-image-box">
+                                <img src="@Url.Action("Image","File",new { path=Model.PicNatCode})" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="HesabBank">تصویر شناسنامه</label>
+                            <div class="upload-image-box">
+                                <img src="@Url.Action("Image","File",new { path=Model.PicShenasname})" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('input[type="text"]').change(function () {
+        debugger;
+        var updateModel = {
+            Value: $(this).val(),
+            NameField: $(this).attr("name")
+        };
+        if (!updateModel.Value)
+            return;
+        $.ajax({
+            url: '@Url.Action("UpdateField")',
+            method: 'POST',
+            data: JSON.stringify(updateModel),
+            contentType:'application/json',
+            success: function (e) {
+            }
+        });
+    });
+    $("#Avatar_file").change(function () {
+        debugger;
+        var tgt = this.target || window.event.srcElement,
+        files = tgt.files;
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                document.getElementById("avatar_image").src = fr.result;
+            }
+            fr.readAsDataURL(files[0]);
+
+
+            var formData = new FormData();
+            formData.append('image', files[0]);
+            $.ajax({
+                url: '@Url.Action("UploadAvatar")',
+                method: 'POST',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (e) {
+                }
+            });
+
+
+
+
+        }
+    });
+    $("#change_avatar_btn").click(function () {
+        $("#Avatar_file").click();
+    });
+</script>

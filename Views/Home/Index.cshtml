@@ -6,24 +6,33 @@
 
 </div>
 <script>
-    
-    window.addEventListener('popstate', function () {
-        $.get(location.pathname, function (e) {
+    function loadpage(addr) {
+        $.get(addr, function (e) {
             animateCSS('.addr-title', 'fadeOutLeftBig');
             animateCSS('.head-tool-box', 'fadeOutLeftBig');
             animateCSS("#main_page_box", 'fadeOutLeftBig', function () {
-                   
                 $("#main_page_box").html(e);
                 var title = $(e).filter("#r_title").text();
-                document.title = title ;
+                document.title = title;
                 $(".addr-title").text(title);
                 animateCSS("#main_page_box", 'fadeInRightBig');
                 animateCSS('.addr-title', 'fadeInRightBig');
                 animateCSS('.head-tool-box', 'fadeInRightBig');
                 $('.page-grid').height(window.innerHeight - 150);
+                typeof (qweqwe) != 'undefined' && initOnAjax();
             });
         });
+    }
+    window.addEventListener('popstate', function () {
+        loadpage(location.pathname);
     });
+    $(function () {
+        if (location.pathname == '/' || location.pathname == '')
+            loadpage("/Report/Index");
+        else
+            loadpage(location.pathname);
+    });
+
     const pushUrl = (href, title) => {
         history.pushState({}, title, href);
         window.dispatchEvent(new Event('popstate'));
@@ -34,22 +43,10 @@
         $(this).addClass('active');
         var addr = $(this).attr('href');
         var title = $('#sidebar-wrapper > div > ul > li > a[href="' + location.pathname + '"]').text();
-        document.title = title; 
-        if ($("#menu_toggle_btn").attr('data-toggle') === '0') {
-            $("#menu_toggle_btn").click();  
-        }
+        document.title = title;
+        $("#menu_toggle_btn").click();
         pushUrl(addr, title);
         return;
     });
-    $(function () {
-        if (location.pathname == '/' || location.pathname == '') return;
-        $.get(location.pathname, function (e) {
-            $("#main_page_box").html(e);
-            var title = $('#sidebar-wrapper > div > ul > li > a[href="' + location.pathname + '"]').text();
-            $(".addr-title").text(title);
-            document.title = title;
-            $('.page-grid').height(window.innerHeight - 150);
-        })
 
-    });
 </script>

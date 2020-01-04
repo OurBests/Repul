@@ -46,17 +46,20 @@ namespace web
             services.AddTransient<IPersonalPortalService, PersonalPortalService>();
             services.AddTransient<IPaymentService, PaymentService>();
             services.AddTransient<IDestinationPortalService, DestinationPortalService>();
+            services.AddTransient<IReportService, ReportService>();
+            services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IFileService, FileService>();
 
             services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo("keys"))
             .SetApplicationName("web")
-            .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(7));
 
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config=> {
                 config.LoginPath = "/Login";
                 config.SlidingExpiration = true;
-                config.ExpireTimeSpan = TimeSpan.FromDays(90);
+                config.ExpireTimeSpan = TimeSpan.FromDays(1);
             });
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

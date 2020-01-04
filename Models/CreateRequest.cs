@@ -14,5 +14,6 @@ namespace web.Models
         public string DestinationPortalId { get;  set; }
         public string Description { get;  set; }
         public string Price { get;  set; }
+        public string GroupId { get; internal set; }
     }
 }

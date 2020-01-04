@@ -7,5 +7,6 @@ namespace web.Models
 {
     public class GetPersonalPortalModel: ServiceRequest
     {
+        public string PersonalPortalID { get; set; }
     }
 }

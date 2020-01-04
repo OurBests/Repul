@@ -14,6 +14,7 @@ namespace web.Models
         public string UserId { get; set; }
         public string Accountid { get; set; }
         public string Price { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public string Help { get; set; }
         public string CreatedAt { get; set; }

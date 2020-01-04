@@ -55,6 +55,27 @@ namespace web.Controllers
             var result = await _destinationPortalService.AddDestinationPortal(model);
             return Json(result);
         }
+        public async Task<IActionResult> Edit([FromBody] AddDestinationPortalModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _destinationPortalService.EditDestinationPortal(model);
+            return Json(result);
+        }
+        public async Task<IActionResult> UpdatePrice([FromBody] AddDestinationPortalModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _destinationPortalService.UpdatePrice(model);
+            return Json(result);
+        }
+        public async Task<IActionResult> Delete([FromBody] GetDestinationPortalModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _destinationPortalService.DeleteDestinationPortal(model);
+            return Json(result);
+        }
         [HttpGet]
         [Route("DestinationPortals/Pay/{DestinationPortalId}")]
         public async Task<IActionResult> Pay([FromRoute] GetDestinationPortalModel model)
@@ -72,6 +93,7 @@ namespace web.Controllers
             model.Hash = User.Claims.GetUserHash();
             string mechantId = "dd5c225c-bbf5-11e9-9621-000c295eb8fc";
             var personalPortal = await _destinationPortalService.GetUserRegistredPortal(model);
+            bodyModel.Price = personalPortal.Price > 0 ? personalPortal.Price.ToString() : bodyModel.Price;
             var payment = new Zarinpal.Payment(mechantId, int.Parse(bodyModel.Price));
 
             var retUrl = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, $"DestinationPortals/PayReturn");
@@ -98,6 +120,49 @@ namespace web.Controllers
             var verfyResult = await _paymentService.VerifyRequest(model);
             ViewBag.OK = model.Status;
             return View(verfyResult);
+        }
+
+
+
+        [HttpGet]
+        [Route("DestinationPortals/PayGroup/{GroupId}")]
+        public async Task<IActionResult> PayGroup([FromRoute] GroupPayModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            var result = await _destinationPortalService.GetUserGroupPortals(model);
+            ViewBag.GroupId = model.GroupId;
+            return View(result);
+        }
+        [HttpPost]
+        [Route("DestinationPortals/PayGroupSubmit/{GroupId}")]
+        public async Task<IActionResult> PayGroupSubmit(GroupPayModel model)
+        {
+            model.ID = User.Claims.GetUserId();
+            model.Hash = User.Claims.GetUserHash();
+            string mechantId = "dd5c225c-bbf5-11e9-9621-000c295eb8fc";
+            var portals = await _destinationPortalService.GetUserGroupPortals(model);
+            var price = model.Price.HasValue ? model.Price.Value : portals.Sum(x => x.Price);
+            var title = portals.FirstOrDefault().Group;
+            var payment = new Zarinpal.Payment(mechantId, (int)price);
+
+            var retUrl = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, $"DestinationPortals/PayReturn");
+
+            var requestResult = await payment.PaymentRequest(title, retUrl);
+            if (requestResult.Status == 100)
+            {
+                await _paymentService.CreateRequest(new CreateRequest
+                {
+                    Status = requestResult.Status,
+                    Authority = requestResult.Authority,
+                    Link = requestResult.Link,
+                    GroupId = model.GroupId,
+                    Description = title,
+                    Price = price.ToString()
+                });
+                return Redirect(requestResult.Link);
+            }
+            return View("PayGroup", model);
         }
     }
 }

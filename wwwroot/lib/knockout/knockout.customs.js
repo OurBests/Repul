@@ -34,3 +34,61 @@
         }
     }
 }
+ko.bindingHandlers.currencyFormat = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+
+        ko.utils.registerEventHandler(element, 'keyup', function (event) {
+            var observable = valueAccessor();
+            observable(formatInput(element.value));
+            observable.notifySubscribers(5);
+        });
+
+    },
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        $(element).val(value);
+    }
+};
+
+ko.bindingHandlers.anmiateVisible = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+
+        var $element = $(element);
+
+        if (value)
+            $element.show();
+        else
+            $element.hide();
+    },
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+
+        var $element = $(element);
+
+
+        var allBindings = allBindingsAccessor();
+
+        // Grab data from binding property
+        var duration = allBindings.duration || 500;
+        var isCurrentlyVisible = !(element.style.display == "none");
+
+        if (value && !isCurrentlyVisible)
+            $element.show(duration);
+        else if ((!value) && isCurrentlyVisible)
+            $element.hide(duration);
+    }
+};
+
+function formatInput(value) {
+
+    value += '';
+
+    value = value.replace(/,/g, '');
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(value)) {
+        value = value.replace(rgx, '$1' + ',' + '$2');
+    }
+
+    return value;
+}

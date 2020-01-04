@@ -74,7 +74,8 @@ namespace web.Controllers
             var principal = new ClaimsPrincipal(identity);
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
             {
-                IsPersistent = true
+                IsPersistent = true,
+                ExpiresUtc = DateTime.Now.AddDays(90)
             });
         }
     }

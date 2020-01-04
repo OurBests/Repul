@@ -7,39 +7,40 @@
         margin: 0;
         padding: 0;
         height: 100%;
-        background: #60a3bc !important;
+        background: #7e57c2  !important;
     }
 </style>
 <div id="login_form">
-    <div data-bind="visible: stepOneVisible">
+    <div data-bind="anmiateVisible: stepOneVisible">
         <div id="login_form_box" class="justify-content-center form_container">
-            <div style="text-align: center;margin-bottom: 10px;">لطفا شماره موبایل خود را وارد نمایید</div>
+            <div style="text-align: center;margin-bottom: 3px;">لطفا شماره موبایل خود را وارد نمایید</div>
+            <div style="text-align: center;margin-bottom: 10px;font-size:11px;">پیامکی حاوی کد تاییدیه ورود به شما ارسال خواهد شد</div>
             <div class="" style="width:250px;margin:auto;">
-                <input type="text" data-bind="value: Phone" class="form-control" maxlength="11" style="text-align:center;">
+                <input type="text" data-bind="value: Phone" class="form-control" maxlength="11" style="text-align:center;" data-format="phone" autofocus>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3 login_container" data-bind="loading: loading">
-            <button data-bind="click: sendStepone" class="btn btn-success">ارسال</button>
+            <button data-bind="click: sendStepone" class="btn btn-success">ارسال کد</button>
         </div>
     </div>
-    <div data-bind="visible: stepTwoVisible">
+    <div data-bind="anmiateVisible: stepTwoVisible">
         <div id="login_form_box" class="justify-content-center form_container">
             <div style="text-align: center;margin-bottom: 10px;">کد ارسال شده را وارد نمایید</div>
             <div class="" style="width:250px;margin:auto;">
-                <input type="text" data-bind="value: SecureCode" class="form-control" maxlength="6"
-                       style="text-align:center;">
+                <input type="text" data-bind="value: SecureCode" class="form-control" maxlength="6" data-format="number"
+                       style="text-align:center;" autofocus>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3 login_container" data-bind="loading: loading">
-            <button data-bind="click: sendSteptwo" class="btn btn-success">ارسال</button>
+            <button data-bind="click: sendSteptwo" class="btn btn-success">ورود</button>
         </div>
     </div>
-    <div data-bind="visible: stepRegisterVisible">
+    <div data-bind="anmiateVisible: stepRegisterVisible">
         <div id="login_form_box" class="justify-content-center form_container">
             <div style="text-align: center;margin-bottom: 10px;">لطفا کد ملی و نام کاربری خود را وارد نمایید</div>
             <div class="" style="width:250px;margin:auto;">
                 <input type="text" data-bind="value: NatCode" class="form-control "
-                       maxlength="10" style="text-align:right;" placeholder="کد ملی">
+                       maxlength="10" style="text-align:right;" placeholder="کد ملی" data-format="number" autofocus>
             </div>
             <div class="" style="width:250px;margin:auto;">
 

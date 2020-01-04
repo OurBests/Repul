@@ -52,15 +52,15 @@
                             {
 
                                 <div class="" style="width:250px;margin:auto;">
-                                    <div style="width:100%;">مبلغ</div>
+                                    <div style="width:100%;">مبلغ (تومان)</div>
                                     <input type="text" id="Price" name="Price" class="form-control "
-                                           maxlength="10" style="text-align:right;margin-top:5px;" placeholder="ریال">
+                                           maxlength="10" style="text-align:right;margin-top:5px;" placeholder="تومان" data-format="number">
                                 </div>
                             }
                             else
                             {
                                 <div>
-                                    <h2 style="text-align:center;">@(long.Parse(Model.Price).ToString("##,###")) ریال</h2>
+                                    <h2 style="text-align:center;">@(long.Parse(Model.Price).ToString("##,###")) تومان</h2>
                                 </div>
                             }
                             <div style="height:20px;"></div>

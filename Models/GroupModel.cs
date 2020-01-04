@@ -11,5 +11,6 @@ namespace web.Models
         [JsonProperty("_id")]
         public string Id { get; set; }
         public string Name { get; set; }
+        public IEnumerable<PaymentModel> Payments { get; set; }
     }
 }

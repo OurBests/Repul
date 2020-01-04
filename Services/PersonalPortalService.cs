@@ -20,6 +20,18 @@ namespace web.Services
             return result.DataModel;
         }
 
+        public async Task<TitleUniqueModel> CheckTitleIsUnqiue(TitleModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<TitleUniqueModel>>("/checktitle", model);
+            return result.DataModel;
+        }
+
+        public async Task<string> DeletePersonalPortal(GetPersonalPortalModel model)
+        {
+            var result = await _requestManagerService.Post<ServiceResponse<GetDestinationPortalModel>>("/portal_delete", model);
+            return result.DataModel.ID;
+        }
+
         public async Task<PersonalPortalModel> GetPersonalPortal(PayModel model)
         {
             var result = await _requestManagerService.Post<ServiceResponse<IEnumerable<PersonalPortalModel>>>("/portal_get_one", model);
